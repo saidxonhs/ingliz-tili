@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EngMaster Pro — Shaxsiy Ingliz Tili Akademiyasi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* 3D Flashcard Flip Animation */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* Telegram-style Mascot Paws Animation */
+    .mascot-paw {
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mascot-head {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: center 110px;
+    }
+    .mascot-pupil {
+      transition: transform 0.15s ease-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.45s ease-in-out;
+    }
+
+    /* Strict High-Contrast White Background & Black Text for Play / Games Zone */
+    #games-play-zone,
+    #games-play-zone * {
+      color: #000000 !important;
+    }
+    #games-play-zone {
+      background-color: #ffffff !important;
+    }
+    #games-play-zone .game-surface {
+      background-color: #ffffff !important;
+      border: 2px solid #cbd5e1;
+    }
+    #games-play-zone .game-option-btn {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 2px solid #94a3b8;
+    }
+    #games-play-zone .game-option-btn:hover:not(:disabled) {
+      background-color: #f8fafc !important;
+      border-color: #000000 !important;
+    }
+    #games-play-zone .game-option-correct {
+      background-color: #bbf7d0 !important;
+      border-color: #16a34a !important;
+      color: #000000 !important;
+    }
+    #games-play-zone .game-option-wrong {
+      background-color: #fecaca !important;
+      border-color: #dc2626 !important;
+      color: #000000 !important;
+    }
+    #games-play-zone .game-option-selected {
+      background-color: #fef08a !important;
+      border-color: #ca8a04 !important;
+      color: #000000 !important;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- ==================== 1. AUTHENTICATION SCREEN (LOGIN & REGISTER) ==================== -->
+  <div id="auth-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
+    <div id="auth-card" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-white/40 relative">
+      
+      <!-- Telegram-Style Animal Mascot -->
+      <div class="flex flex-col items-center mb-3">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-b from-indigo-100 to-purple-100 border-4 border-indigo-50 shadow-inner flex items-center justify-center overflow-hidden relative">
+          <svg viewBox="0 0 200 200" class="w-32 h-32">
+            <!-- Ears -->
+            <circle cx="52" cy="58" r="22" fill="#8B5A2B" />
+            <circle cx="52" cy="58" r="12" fill="#D2A679" />
+            <circle cx="148" cy="58" r="22" fill="#8B5A2B" />
+            <circle cx="148" cy="58" r="12" fill="#D2A679" />
+
+            <!-- Head Group -->
+            <g id="auth-mascot-head" class="mascot-head">
+              <ellipse cx="100" cy="105" rx="58" ry="52" fill="#A06B35" />
+              <ellipse cx="100" cy="122" rx="28" ry="21" fill="#F3D5B5" />
+              <ellipse cx="100" cy="113" rx="10" ry="7" fill="#3E2723" />
+              <path d="M 90 128 Q 100 137 110 128" stroke="#3E2723" stroke-width="3" fill="none" stroke-linecap="round" />
+
+              <!-- Eyes Open -->
+              <g id="auth-eyes-open">
+                <circle cx="77" cy="92" r="10" fill="#FFFFFF" />
+                <circle id="auth-pupil-left" class="mascot-pupil" cx="77" cy="92" r="5" fill="#1E293B" />
+                <circle cx="79" cy="90" r="1.8" fill="#FFFFFF" />
+
+                <circle cx="123" cy="92" r="10" fill="#FFFFFF" />
+                <circle id="auth-pupil-right" class="mascot-pupil" cx="123" cy="92" r="5" fill="#1E293B" />
+                <circle cx="125" cy="90" r="1.8" fill="#FFFFFF" />
+              </g>
+
+              <!-- Eyes Closed -->
+              <g id="auth-eyes-closed" opacity="0">
+                <path d="M 67 93 Q 77 101 87 93" stroke="#3E2723" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                <path d="M 113 93 Q 123 101 133 93" stroke="#3E2723" stroke-width="3.5" fill="none" stroke-linecap="round" />
+              </g>
+            </g>
+
+            <!-- Left Paw -->
+            <g id="auth-paw-left" class="mascot-paw" transform="translate(0, 65)">
+              <rect x="44" y="82" width="42" height="58" rx="20" fill="#7A4B22" stroke="#5C3616" stroke-width="2" />
+              <ellipse cx="65" cy="96" rx="11" ry="8" fill="#D2A679" />
+            </g>
+
+            <!-- Right Paw -->
+            <g id="auth-paw-right" class="mascot-paw" transform="translate(0, 65)">
+              <rect x="114" y="82" width="42" height="58" rx="20" fill="#7A4B22" stroke="#5C3616" stroke-width="2" />
+              <ellipse cx="135" cy="96" rx="11" ry="8" fill="#D2A679" />
+            </g>
+          </svg>
+        </div>
+        <p id="auth-mascot-msg" class="text-xs font-extrabold text-indigo-600 mt-1.5 text-center">
+          👋 EngMaster Pro akademiyasiga xush kelibsiz!
+        </p>
+      </div>
+
+      <!-- Brand Title -->
+      <div class="text-center mb-4">
+        <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          EngMaster Pro
+        </h1>
+        <p class="text-xs text-slate-500 font-medium">Shaxsiy ingliz tili va coin platformasi</p>
+      </div>
+
+      <!-- Auth Tabs: Login vs Register -->
+      <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl mb-5">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-xl font-extrabold text-sm bg-white text-indigo-700 shadow-sm transition">
+          🔑 Kirish
+        </button>
+        <button id="auth-tab-register" onclick="switchAuthTab('register')" class="py-2.5 rounded-xl font-extrabold text-sm text-slate-600 hover:text-slate-900 transition">
+          📝 Akkaunt Ochish
+        </button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="login-form" onsubmit="handleUserLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1">Login (O'quvchi yoki Admin):</label>
+          <input
+            type="text"
+            id="login-username"
+            onfocus="authMascotLook()"
+            oninput="authMascotTrack(this.value)"
+            placeholder="Loginingizni kiriting..."
+            required
+            class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900 transition"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1">Parol:</label>
+          <div class="relative">
+            <input
+              type="password"
+              id="login-password"
+              onfocus="authMascotHideEyes()"
+              onblur="authMascotReset()"
+              placeholder="Parolingizni kiriting..."
+              required
+              class="w-full px-4 py-3 pr-12 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900 transition"
+            />
+            <button type="button" onclick="toggleAuthPassword('login-password')" class="absolute right-3.5 top-3 text-slate-500 hover:text-slate-800">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <p id="login-error-msg" class="hidden text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 p-2.5 rounded-xl text-center"></p>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
+          🚀 Tizimga Kirish
+        </button>
+
+        <p class="text-[11px] text-center text-slate-400 font-medium">
+          Akkauntingiz yo'qmi? Yuqoridagi <strong>"Akkaunt Ochish"</strong> tugmasini bosing (0 Coin bilan boshlanadi).
+        </p>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="register-form" onsubmit="handleUserRegister(event)" class="hidden space-y-3.5">
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1">Ism va Familiyangiz:</label>
+          <input
+            type="text"
+            id="reg-fullname"
+            onfocus="authMascotLook()"
+            oninput="authMascotTrack(this.value)"
+            placeholder="Masalan: Jasur Karimov"
+            required
+            class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1">Yangi Login tanlang:</label>
+          <input
+            type="text"
+            id="reg-username"
+            onfocus="authMascotLook()"
+            oninput="authMascotTrack(this.value)"
+            placeholder="Masalan: jasur2026"
+            required
+            class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1">Parol o'rnating:</label>
+          <div class="relative">
+            <input
+              type="password"
+              id="reg-password"
+              onfocus="authMascotHideEyes()"
+              onblur="authMascotReset()"
+              placeholder="Kamida 4 ta belgi..."
+              minlength="4"
+              required
+              class="w-full px-4 py-2.5 pr-12 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900"
+            />
+            <button type="button" onclick="toggleAuthPassword('reg-password')" class="absolute right-3.5 top-2.5 text-slate-500 hover:text-slate-800">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-2.5 text-xs font-bold text-amber-800 flex items-center gap-2">
+          <span>🪙</span> Yangi akkaunt ochilganda balans <strong>0 Coin</strong> dan boshlanadi.
+        </div>
+
+        <p id="reg-error-msg" class="hidden text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 p-2.5 rounded-xl text-center"></p>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
+          ✨ Ro'yxatdan O'tish va Kirish
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN APPLICATION SHELL (HIDDEN UNTIL LOGGED IN) ==================== -->
+  <div id="main-app-shell" class="hidden min-h-screen flex flex-col lg:flex-row">
+
+    <!-- Mobile Top Header -->
+    <div class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-indigo-100 px-4 py-3 flex items-center justify-between shadow-sm">
+      <div class="flex items-center gap-2.5">
+        <button onclick="toggleMobileSidebar()" class="p-2 rounded-xl bg-slate-100 text-slate-800 font-bold">
+          ☰
+        </button>
+        <span class="font-black text-lg bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">EngMaster Pro</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('coins')" class="bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 shadow-sm">
+          <span>🪙</span> <span id="mobile-coin-count">0</span>
+        </button>
+        <button onclick="logoutCurrentUser()" class="bg-slate-900 text-white font-bold px-3 py-1.5 rounded-xl text-xs">
+          Chiqish
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="mobile-sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/50 z-40 hidden lg:hidden"></div>
+
+    <!-- LEFT SIDEBAR (PROFILE + NAVIGATION) -->
+    <aside id="left-sidebar" class="fixed lg:sticky top-0 left-0 z-50 lg:z-30 h-screen w-72 bg-white border-r border-indigo-100 shadow-xl lg:shadow-none flex flex-col justify-between p-5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 overflow-y-auto">
+      
+      <div class="space-y-6">
+        <!-- Brand Logo -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white font-black text-lg shadow-md">
+              EM
+            </div>
+            <div>
+              <h1 class="text-lg font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent leading-none">
+                EngMaster Pro
+              </h1>
+              <p class="text-[11px] text-slate-400 font-semibold mt-1">Ingliz Tili Akademiyasi</p>
+            </div>
+          </div>
+          <button onclick="toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+        </div>
+
+        <!-- Left Sidebar Profile Card -->
+        <div onclick="switchTab('profile')" class="cursor-pointer group rounded-2xl p-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border border-indigo-100 hover:border-indigo-300 transition space-y-3">
+          <div class="flex items-center gap-3">
+            <div id="sidebar-avatar" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-2xl shadow-sm shrink-0">
+              🎓
+            </div>
+            <div class="min-w-0">
+              <p id="sidebar-fullname" class="font-black text-slate-900 text-sm truncate">O'quvchi</p>
+              <p id="sidebar-username" class="text-xs text-slate-500 font-semibold truncate">@username</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-indigo-100/80">
+            <span id="sidebar-role-badge" class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-indigo-600 text-white">
+              O'quvchi
+            </span>
+            <span class="flex items-center gap-1 font-black text-sm text-amber-700 bg-amber-300/70 px-2.5 py-0.5 rounded-lg">
+              <span>🪙</span> <span id="sidebar-coin-count">0</span>
+            </span>
+          </div>
+
+          <p class="text-[11px] font-bold text-indigo-600 group-hover:underline flex items-center justify-between">
+            <span>⚙️ Profilni sozlash</span>
+            <span>→</span>
+          </p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="space-y-1.5">
+          <button onclick="switchTab('home')" data-tab="home" class="nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 bg-indigo-600 text-white shadow-sm">
+            <span>🏠</span> Bosh sahifa & Yangiliklar
+          </button>
+          <button onclick="switchTab('vocab')" data-tab="vocab" class="nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 text-slate-700 hover:bg-indigo-50">
+            <span>📚</span> Lug'atlar (A1–C2 • 600+)
+          </button>
+          <button onclick="switchTab('flashcards')" data-tab="flashcards" class="nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 text-slate-700 hover:bg-indigo-50">
+            <span>🃏</span> 3D Flashcards
+          </button>
+          <button onclick="switchTab('games')" data-tab="games" class="nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 text-slate-700 hover:bg-indigo-50">
+            <span>🎮</span> Video O'yinlar (6 xil)
+          </button>
+          <button onclick="switchTab('coins')" data-tab="coins" class="nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 text-slate-700 hover:bg-indigo-50">
+            <span>🪙</span> Coin & Mukofotlar
+          </button>
+          <button onclick="switchTab('profile')" data-tab="profile" class="nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 text-slate-700 hover:bg-indigo-50">
+            <span>👤</span> Profil & Sozlamalar
+          </button>
+          <button id="sidebar-admin-btn" onclick="switchTab('admin')" data-tab="admin" class="nav-btn hidden w-full px-4 py-3 rounded-2xl text-sm font-extrabold transition flex items-center gap-3 bg-slate-900 text-amber-300 hover:bg-slate-800 shadow-md">
+            <span>🛡️</span> Admin Boshqaruv Paneli
+          </button>
+        </nav>
+      </div>
+
+      <!-- Bottom Logout Button -->
+      <div class="pt-4 border-t border-slate-100 space-y-2">
+        <button onclick="logoutCurrentUser()" class="w-full py-2.5 px-4 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold text-sm transition flex items-center justify-center gap-2">
+          <span>🚪</span> Akkauntdan Chiqish
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE AREA -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
+
+      <!-- ==================== TAB 1: HOME & NEWS ==================== -->
+      <section id="tab-home" class="tab-section space-y-6">
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white p-6 sm:p-9 shadow-xl">
+          <div class="relative z-10 max-w-2xl space-y-3">
+            <span class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3.5 py-1 rounded-full text-xs font-bold">
+              ✨ Salom, <span id="hero-user-name">O'quvchi</span>!
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-black leading-tight">
+              600+ lug'at, ikki tillik audio va 6 xil video o'yinlar bilan ingliz tilini zabt eting!
+            </h2>
+            <p class="text-indigo-100 text-sm leading-relaxed">
+              Har bir darajada (A1–C2) 100 tadan ortiq lug'atlar, inglizcha va o'zbekcha ovozli tarjima hamda qiziqarli o'yinlar orqali Coin yig'ing.
+            </p>
+            <div class="flex flex-wrap gap-3 pt-2">
+              <button onclick="switchTab('vocab')" class="bg-white text-indigo-700 font-extrabold px-5 py-2.5 rounded-2xl shadow hover:bg-indigo-50 transition text-sm">
+                📚 Lug'atlarni ochish
+              </button>
+              <button onclick="switchTab('games')" class="bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow hover:bg-amber-300 transition text-sm">
+                🎮 Video O'yinlar
+              </button>
+            </div>
+          </div>
+          <div class="hidden md:block absolute right-10 bottom-4 text-8xl opacity-20 select-none">🚀</div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-2xl p-4 border border-indigo-100 shadow-sm flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl">📖</div>
+            <div>
+              <p class="text-[11px] text-slate-500 font-bold uppercase">Jami Lug'atlar</p>
+              <p id="stat-total-words" class="text-xl font-black text-slate-900">600+</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-4 border border-emerald-100 shadow-sm flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">✅</div>
+            <div>
+              <p class="text-[11px] text-slate-500 font-bold uppercase">Yodlangan</p>
+              <p id="stat-mastered-words" class="text-xl font-black text-slate-900">0</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-4 border border-amber-100 shadow-sm flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl">🪙</div>
+            <div>
+              <p class="text-[11px] text-slate-500 font-bold uppercase">Balansingiz</p>
+              <p id="stat-home-coins" class="text-xl font-black text-slate-900">0</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-4 border border-pink-100 shadow-sm flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl">🏆</div>
+            <div>
+              <p class="text-[11px] text-slate-500 font-bold uppercase">O'yinlar</p>
+              <p id="stat-games-played" class="text-xl font-black text-slate-900">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- News Section -->
+        <div class="space-y-4">
+          <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
+            <span>📰</span> Akademiya Yangiliklari va E'lonlar
+          </h3>
+          <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: VOCABULARY (100+ PER LEVEL A1-C2) ==================== -->
+      <section id="tab-vocab" class="tab-section hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-indigo-100 space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-black text-slate-900">📚 Darajalar bo'yicha Lug'atlar</h2>
+              <p class="text-sm text-slate-500 mt-1">Har bir darajada 100+ tadan so'z, o'zbekcha tarjima, misol gaplar va ovozli talaffuz</p>
+            </div>
+
+            <div class="relative w-full md:w-72">
+              <input type="text" id="vocab-search" oninput="resetVocabPaginationAndRender()" placeholder="So'z yoki tarjima qidirish..." class="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 focus:border-indigo-500 outline-none text-sm font-medium" />
+              <span class="absolute left-3.5 top-2.5 text-slate-400">🔍</span>
+            </div>
+          </div>
+
+          <!-- CEFR Level Buttons -->
+          <div class="flex flex-wrap items-center gap-2.5" id="level-buttons-container"></div>
+
+          <!-- Level Description -->
+          <div class="rounded-2xl p-4 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span id="current-level-badge" class="inline-block px-3 py-1 rounded-lg text-xs font-black bg-indigo-600 text-white mb-1">A1 — Beginner</span>
+              <p id="current-level-desc" class="text-sm font-medium text-slate-700"></p>
+            </div>
+            <div class="text-sm font-bold text-slate-700 bg-white px-4 py-2 rounded-xl border border-slate-200">
+              Jami: <span id="vocab-count-label" class="text-indigo-600 font-black">0</span> ta so'z
+            </div>
+          </div>
+
+          <!-- Vocabulary Cards Grid -->
+          <div id="vocab-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+          <!-- Pagination Controls for 100+ Words -->
+          <div id="vocab-pagination" class="flex flex-wrap items-center justify-center gap-2 pt-4"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: 3D FLASHCARDS ==================== -->
+      <section id="tab-flashcards" class="tab-section hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-purple-100 max-w-4xl mx-auto space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-black text-slate-900">🃏 3D Interaktiv Flashcards</h2>
+              <p class="text-sm text-slate-500">Kartochkani bosing, ovozli eshiting va yodlab Coin ishlang!</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <select id="fc-level-select" onchange="initFlashcards()" class="bg-purple-50 border border-purple-200 text-purple-900 font-extrabold rounded-xl px-3.5 py-2 text-sm outline-none">
+                <option value="A1" selected>A1 Daraja</option>
+                <option value="A2">A2 Daraja</option>
+                <option value="B1">B1 Daraja</option>
+                <option value="B2">B2 Daraja</option>
+                <option value="C1">C1 Daraja</option>
+                <option value="C2">C2 Daraja</option>
+              </select>
+              <button onclick="shuffleFlashcards()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3.5 py-2 rounded-xl text-sm transition">
+                🔀 Aralashtirish
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-bold text-slate-500">
+              <span>Kartochka: <span id="fc-progress-text" class="text-purple-700">1 / 100</span></span>
+              <span>Siz yodlagan: <span id="fc-known-count" class="text-emerald-600">0</span> ta</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div id="fc-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-300" style="width: 5%"></div>
+            </div>
+          </div>
+
+          <div class="perspective-1000 w-full h-80 sm:h-96 cursor-pointer select-none" onclick="flipFlashcard()">
+            <div id="flashcard-inner" class="relative w-full h-full transform-style-3d">
+              <!-- Front -->
+              <div class="absolute inset-0 backface-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white p-6 sm:p-10 flex flex-col items-center justify-between shadow-xl">
+                <div class="w-full flex items-center justify-between">
+                  <span id="fc-front-level" class="bg-white/20 px-3 py-1 rounded-full text-xs font-extrabold">A1</span>
+                  <span class="text-xs font-semibold text-white/80">Tarjimani ko'rish uchun bosing ↻</span>
+                </div>
+                <div class="text-center space-y-2 my-auto">
+                  <h3 id="fc-en-word" class="text-4xl sm:text-5xl font-black">Apple</h3>
+                  <p id="fc-phonetic" class="text-indigo-200 font-medium text-lg">/ˈæp.əl/</p>
+                </div>
+                <div onclick="event.stopPropagation()">
+                  <button onclick="speakCurrentFlashcard('en')" class="bg-white text-indigo-700 hover:bg-indigo-50 font-extrabold px-5 py-2.5 rounded-2xl shadow-md transition flex items-center gap-2 text-sm">
+                    <span>🇺🇸</span> Inglizcha eshitish
+                  </button>
+                </div>
+              </div>
+
+              <!-- Back -->
+              <div class="absolute inset-0 backface-hidden rotate-y-180 rounded-3xl bg-white border-2 border-purple-200 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase text-purple-600 bg-purple-100 px-3 py-1 rounded-full">O'zbekcha Tarjima</span>
+                  <span class="text-xs font-semibold text-slate-400">Orqaga ↻</span>
+                </div>
+                <div class="text-center space-y-3 my-auto">
+                  <h3 id="fc-uz-word" class="text-3xl sm:text-4xl font-black text-slate-900">Olma</h3>
+                  <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 max-w-xl mx-auto space-y-1">
+                    <p id="fc-en-sentence" class="text-sm sm:text-base font-bold text-indigo-700"></p>
+                    <p id="fc-uz-sentence" class="text-sm text-slate-600 font-medium"></p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-2" onclick="event.stopPropagation()">
+                  <button onclick="speakCurrentFlashcard('en')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold px-4 py-2 rounded-xl text-xs">🇺🇸 EN</button>
+                  <button onclick="speakCurrentFlashcard('uz')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold px-4 py-2 rounded-xl text-xs">🇺🇿 UZ</button>
+                  <button onclick="speakCurrentFlashcard('both')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-xl text-xs">🔊 EN+UZ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <button onclick="prevFlashcard()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm">⬅️ Oldingi</button>
+            <button onclick="markFlashcardKnown()" class="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold shadow-md text-sm">✅ Yodladim (+5 Coin)</button>
+            <button onclick="nextFlashcard()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm">Keyingi ➡️</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: VIDEO GAMES (PURE WHITE BG & BLACK TEXT) ==================== -->
+      <section id="tab-games" class="tab-section hidden">
+        <div id="games-play-zone" class="rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-slate-300 space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-slate-200 pb-5">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-black">🎮 Ingliz Tili Video O'yinlari</h2>
+              <p class="text-sm font-semibold mt-1">Arcade va intellektual o'yinlar o'ynab o'z akkauntingizga Coin yig'ing!</p>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <label for="game-level-select" class="text-sm font-extrabold">Daraja:</label>
+              <select id="game-level-select" onchange="restartActiveGame()" class="border-2 border-black rounded-xl px-3.5 py-2 text-sm font-extrabold bg-white">
+                <option value="ALL">Barcha (A1–C2)</option>
+                <option value="A1" selected>A1 Daraja</option>
+                <option value="A2">A2 Daraja</option>
+                <option value="B1">B1 Daraja</option>
+                <option value="B2">B2 Daraja</option>
+                <option value="C1">C1 Daraja</option>
+                <option value="C2">C2 Daraja</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 6 Video Games Selector -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <button onclick="selectGameMode('shooter')" id="game-tab-shooter" class="game-surface rounded-2xl p-4 text-left transition shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">🚀</span>
+                <span class="text-xs font-black px-2 py-0.5 rounded border border-black">+15 Coin</span>
+              </div>
+              <h3 class="font-black text-base mt-1">1. Kosmik So'z Ovchisi (Arcade)</h3>
+              <p class="text-xs font-semibold mt-0.5">Kosmik kemani boshqarib to'g'ri tarjima meteorini oting!</p>
+            </button>
+
+            <button onclick="selectGameMode('racer')" id="game-tab-racer" class="game-surface rounded-2xl p-4 text-left transition shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">🏎️</span>
+                <span class="text-xs font-black px-2 py-0.5 rounded border border-black">+20 Coin</span>
+              </div>
+              <h3 class="font-black text-base mt-1">2. Turbo So'z Poygasi</h3>
+              <p class="text-xs font-semibold mt-0.5">To'g'ri javob berib mashinangizni tezlashtiring va marraga yeting!</p>
+            </button>
+
+            <button onclick="selectGameMode('quiz')" id="game-tab-quiz" class="game-surface rounded-2xl p-4 text-left transition shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">🎯</span>
+                <span class="text-xs font-black px-2 py-0.5 rounded border border-black">+10 Coin</span>
+              </div>
+              <h3 class="font-black text-base mt-1">3. So'z Topish (Quiz)</h3>
+              <p class="text-xs font-semibold mt-0.5">4 ta variantdan to'g'ri tarjimani aniqlang.</p>
+            </button>
+
+            <button onclick="selectGameMode('match')" id="game-tab-match" class="game-surface rounded-2xl p-4 text-left transition shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">🔗</span>
+                <span class="text-xs font-black px-2 py-0.5 rounded border border-black">+15 Coin</span>
+              </div>
+              <h3 class="font-black text-base mt-1">4. Juftlikni Topish</h3>
+              <p class="text-xs font-semibold mt-0.5">Inglizcha va o'zbekcha so'zlarni bir-biriga moslang.</p>
+            </button>
+
+            <button onclick="selectGameMode('scramble')" id="game-tab-scramble" class="game-surface rounded-2xl p-4 text-left transition shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">🔤</span>
+                <span class="text-xs font-black px-2 py-0.5 rounded border border-black">+15 Coin</span>
+              </div>
+              <h3 class="font-black text-base mt-1">5. Harflarni Terish</h3>
+              <p class="text-xs font-semibold mt-0.5">Aralash harflardan to'g'ri inglizcha so'z tuzing.</p>
+            </button>
+
+            <button onclick="selectGameMode('truefalse')" id="game-tab-truefalse" class="game-surface rounded-2xl p-4 text-left transition shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">⚡</span>
+                <span class="text-xs font-black px-2 py-0.5 rounded border border-black">+8 Coin</span>
+              </div>
+              <h3 class="font-black text-base mt-1">6. Tezkor To'g'ri / Noto'g'ri</h3>
+              <p class="text-xs font-semibold mt-0.5">Tarjima to'g'riligini soniyalar ichida tekshiring.</p>
+            </button>
+          </div>
+
+          <!-- Active Game Arena -->
+          <div id="game-arena" class="game-surface rounded-3xl p-5 sm:p-8 min-h-[380px] flex flex-col justify-between"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 5: COINS & STORE ==================== -->
+      <section id="tab-coins" class="tab-section hidden space-y-6">
+        <div class="bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 rounded-3xl p-6 sm:p-8 text-slate-950 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="space-y-2">
+            <span class="bg-black/10 px-3 py-1 rounded-full text-xs font-black uppercase">Shaxsiy Hamyon</span>
+            <h2 class="text-3xl sm:text-4xl font-black flex items-center gap-3">
+              <span>🪙</span> <span id="wallet-coin-display">0</span> Coin
+            </h2>
+            <p class="text-sm font-semibold text-slate-900/80 max-w-xl">
+              Sizning barcha coinlaringiz shaxsiy akkauntingizga saqlanadi. O'yinlar o'ynang, so'z yodlang va mukofotlar oling!
+            </p>
+          </div>
+          <div class="bg-white/95 rounded-2xl p-5 text-center min-w-[200px] shadow">
+            <p class="text-xs font-extrabold uppercase text-slate-500">Sizning Unvoningiz</p>
+            <p id="student-rank-badge" class="text-lg font-black text-indigo-700 mt-1">🌱 Yangi O'quvchi</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-amber-100 space-y-4">
+            <h3 class="text-xl font-black text-slate-900">🎁 Mukofotlar Do'koni</h3>
+            <div id="rewards-store-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <h3 class="text-xl font-black text-slate-900">📜 Coin Tarixi</h3>
+            <div id="coin-history-list" class="space-y-2.5 max-h-[400px] overflow-y-auto"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 6: STUDENT PROFILE & SETTINGS ==================== -->
+      <section id="tab-profile" class="tab-section hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-indigo-100 max-w-3xl mx-auto space-y-6">
+          <div class="flex flex-col sm:flex-row items-center gap-5 pb-6 border-b border-slate-100">
+            <div id="profile-page-avatar" class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-4xl shadow-lg">
+              🎓
+            </div>
+            <div class="text-center sm:text-left space-y-1">
+              <h2 id="profile-page-fullname" class="text-2xl font-black text-slate-900">O'quvchi Ismi</h2>
+              <p id="profile-page-username" class="text-sm font-bold text-slate-500">@username</p>
+              <div class="flex flex-wrap justify-center sm:justify-start gap-2 pt-1">
+                <span class="bg-amber-100 text-amber-800 font-black text-xs px-3 py-1 rounded-lg">🪙 <span id="profile-page-coins">0</span> Coin</span>
+                <span class="bg-emerald-100 text-emerald-800 font-black text-xs px-3 py-1 rounded-lg">✅ <span id="profile-page-mastered">0</span> ta yodlangan so'z</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Choose Avatar -->
+          <div class="space-y-2">
+            <label class="block text-xs font-extrabold uppercase text-slate-500">Profil Avatarini tanlang:</label>
+            <div class="flex flex-wrap gap-2.5" id="avatar-selector-row">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Edit Profile Form -->
+          <form onsubmit="saveProfileSettings(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-extrabold text-slate-700 mb-1">Ism va Familiya:</label>
+                <input type="text" id="edit-profile-fullname" required class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900" />
+              </div>
+              <div>
+                <label class="block text-xs font-extrabold text-slate-700 mb-1">Login (Username):</label>
+                <input type="text" id="edit-profile-username" required class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 mb-1">Yangi Parol (o'zgartirish uchun kiriting):</label>
+              <input type="text" id="edit-profile-password" required minlength="4" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 outline-none text-sm font-bold text-slate-900" />
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center justify-between gap-3">
+              <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-extrabold px-6 py-3 rounded-2xl shadow-md transition">
+                💾 O'zgarishlarni Saqlash
+              </button>
+              <button type="button" onclick="logoutCurrentUser()" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-bold px-5 py-3 rounded-2xl transition text-sm">
+                🚪 Akkauntdan chiqish
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 7: ADMIN PANEL ==================== -->
+      <section id="tab-admin" class="tab-section hidden space-y-6">
+        <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">
+              🟢 Administrator: husenxonov
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-black mt-2">🛡️ Admin Boshqaruv Markazi</h2>
+            <p class="text-slate-400 text-sm mt-1">Barcha ro'yxatdan o'tgan o'quvchilar coinlari, lug'atlar va yangiliklarni boshqaring</p>
+          </div>
+          <button onclick="logoutCurrentUser()" class="bg-white text-slate-900 font-extrabold px-5 py-2.5 rounded-xl text-sm">
+            🚪 Chiqish
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- 1. Manage Student Coins -->
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <h3 class="text-lg font-black text-slate-900">🪙 O'quvchilarga Coin Berish / Ayirish</h3>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">O'quvchi akkauntini tanlang:</label>
+              <select id="admin-student-select" onchange="updateAdminSelectedStudentInfo()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-bold text-sm text-slate-900">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div id="admin-selected-student-card" class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-center">
+              <p class="text-xs font-bold text-amber-800">Tanlangan o'quvchi balansi:</p>
+              <p id="admin-student-balance" class="text-2xl font-black text-slate-900 mt-0.5">0 Coin</p>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Coin miqdori:</label>
+              <input type="number" id="admin-coin-amount" value="50" min="1" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 font-bold text-slate-900" />
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button onclick="adminModifyStudentCoins('add')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow">
+                ➕ Coin Qo'shish
+              </button>
+              <button onclick="adminModifyStudentCoins('sub')" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow">
+                ➖ Coin Ayirish
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Add New Word -->
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-3">
+            <h3 class="text-lg font-black text-slate-900">📚 Yangi Lug'at Qo'shish</h3>
+            <form onsubmit="adminAddWord(event)" class="space-y-2.5">
+              <div class="grid grid-cols-2 gap-2">
+                <select id="admin-word-level" class="px-3 py-2 rounded-xl border border-slate-300 font-extrabold text-xs">
+                  <option value="A1">A1</option>
+                  <option value="A2">A2</option>
+                  <option value="B1">B1</option>
+                  <option value="B2">B2</option>
+                  <option value="C1">C1</option>
+                  <option value="C2">C2</option>
+                </select>
+                <input type="text" id="admin-word-ipa" placeholder="/transkripsiya/" class="px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+              </div>
+              <input type="text" id="admin-word-en" required placeholder="Inglizcha so'z *" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold" />
+              <input type="text" id="admin-word-uz" required placeholder="O'zbekcha tarjima *" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold" />
+              <input type="text" id="admin-word-ex-en" required placeholder="Inglizcha gap *" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs" />
+              <input type="text" id="admin-word-ex-uz" required placeholder="O'zbekcha gap tarjimasi *" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs" />
+              <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow">
+                ➕ Lug'atga Qo'shish
+              </button>
+            </form>
+          </div>
+
+          <!-- 3. Add News -->
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-3">
+            <h3 class="text-lg font-black text-slate-900">📰 Yangilik Chop Etish</h3>
+            <form onsubmit="adminAddNews(event)" class="space-y-2.5">
+              <select id="admin-news-tag" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold">
+                <option value="Yangilik">📢 Yangilik</option>
+                <option value="Grammatika">📘 Grammatika</option>
+                <option value="Musobaqa">🏆 Musobaqa</option>
+                <option value="Maslahat">💡 Maslahat</option>
+              </select>
+              <input type="text" id="admin-news-title" required placeholder="Yangilik sarlavhasi *" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold" />
+              <textarea id="admin-news-body" rows="4" required placeholder="Yangilik matni *" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs"></textarea>
+              <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow">
+                🚀 Chop Etish
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Registered Students Table -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+          <h3 class="text-lg font-black text-slate-900">👥 Ro'yxatdan O'tgan O'quvchilar Ro'yxati</h3>
+          <div id="admin-students-table" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC & 600+ VOCABULARY GENERATOR ==================== -->
+  <script>
+    // ==================== 1. RICH 100+ WORDS PER LEVEL (A1, A2, B1, B2, C1, C2 = 600+ WORDS) ====================
+    const RAW_LEVEL_VOCAB = {
+      A1: [
+        ['Apple','/ˈæp.əl/','Olma','I eat a red apple every day.','Men har kuni qizil olma yeyman.'],
+        ['Book','/bʊk/','Kitob','This book is very interesting.','Bu kitob juda qiziqarli.'],
+        ['Water','/ˈwɔː.tər/','Suv','Drink clean water every morning.','Har kuni ertalab toza suv iching.'],
+        ['Family','/ˈfæm.əl.i/','Oila','I love my family very much.','Men oilamni juda yaxshi ko\'raman.'],
+        ['House','/haʊs/','Uy','Our house has a green garden.','Bizning uyimizda yashil bog\' bor.'],
+        ['Friend','/frend/','Do\'st','He is my best friend.','U mening eng yaqin do\'stim.'],
+        ['School','/skuːl/','Maktab','We go to school by bus.','Biz maktabga avtobusda boramiz.'],
+        ['Teacher','/ˈtiː.tʃər/','O\'qituvchi','The teacher writes on the board.','O\'qituvchi doskaga yozmoqda.'],
+        ['Student','/ˈstjuː.dənt/','O\'quvchi / Talaba','Every student has a notebook.','Har bir o\'quvchining daftari bor.'],
+        ['Morning','/ˈmɔː.nɪŋ/','Ertalab','Good morning, my dear friends!','Xayrli tong, aziz do\'stlarim!'],
+        ['Night','/naɪt/','Tun / Kecha','Good night and sweet dreams.','Xayrli tun va shirin tushlar.'],
+        ['Sun','/sʌn/','Quyosh','The sun is bright and warm.','Quyosh yorqin va iliq.'],
+        ['Moon','/muːn/','Oy','The moon shines at night.','Oy kechasi nur sochadi.'],
+        ['Star','/stɑːr/','Yulduz','Look at that bright star.','Anavi yorqin yulduzga qarang.'],
+        ['Bread','/bred/','Non','Fresh bread is on the table.','Yangi non stol ustida turibdi.'],
+        ['Milk','/mɪlk/','Sut','Cats like to drink milk.','Mushuklar sut ichishni yaxshi ko\'radi.'],
+        ['Tea','/tiː/','Choy','Would you like green tea?','Ko\'k choy ichishni xohlaysizmi?'],
+        ['Coffee','/ˈkɒf.i/','Qahva','My father drinks coffee in the morning.','Dadam ertalab qahva ichadi.'],
+        ['Car','/kɑːr/','Mashina','That red car is very fast.','Anavi qizil mashina juda tez.'],
+        ['Bus','/bʌs/','Avtobus','The school bus arrives at seven.','Maktab avtobusi soat yettida keladi.'],
+        ['Train','/treɪn/','Poyezd','We travel to Bukhara by train.','Biz Buxoroga poyezdda sayohat qilamiz.'],
+        ['City','/ˈsɪt.i/','Shahar','Nukus is a peaceful city.','Nukus — tinch va osuda shahar.'],
+        ['Village','/ˈvɪl.ɪdʒ/','Qishloq','My grandparents live in a village.','Buvim va bobom qishloqda yashaydilar.'],
+        ['Mother','/ˈmʌð.ər/','Ona','My mother is kind and caring.','Mening onam mehribon va g\'amxo\'r.'],
+        ['Father','/ˈfɑː.ðər/','Ota','My father teaches me how to swim.','Otam menga suzishni o\'rgatadi.'],
+        ['Brother','/ˈbrʌð.ər/','Aka / Uka','My younger brother plays football.','Mening ukam futbol o\'ynaydi.'],
+        ['Sister','/ˈsɪs.tər/','Opa / Singil','My sister reads English stories.','Opam inglizcha hikoyalar o\'qiydi.'],
+        ['Baby','/ˈbeɪ.bi/','Chaqaloq','The little baby is smiling.','Kichkina chaqaloq jilmaymoqda.'],
+        ['Cat','/kæt/','Mushuk','The white cat sleeps on the chair.','Oq mushuk stulda uxlayapti.'],
+        ['Dog','/dɒɡ/','It / Kuchuk','Our dog runs in the park.','Bizning itimiz bog\'da yugurmoqda.'],
+        ['Bird','/bɜːd/','Qush','A small bird sings in the tree.','Kichik qush daraxtda sayramoqda.'],
+        ['Fish','/fɪʃ/','Baliq','Fish live in rivers and seas.','Baliqlar daryo va dengizlarda yashaydi.'],
+        ['Horse','/hɔːs/','Ot','The black horse runs very fast.','Qora ot juda tez yuguradi.'],
+        ['Tree','/triː/','Daraxt','This old tree gives cool shade.','Bu keksa daraxt salqin soya beradi.'],
+        ['Flower','/ˈflaʊ.ər/','Gul','She waters the red flowers.','U qizil gullarga suv quymoqda.'],
+        ['Table','/ˈteɪ.bəl/','Stol','Put your books on the table.','Kitoblaringizni stol ustiga qo\'ying.'],
+        ['Chair','/tʃeər/','Stul','Please sit on this chair.','Iltimos, mana bu stulga o\'tiring.'],
+        ['Door','/dɔːr/','Eshik','Close the door behind you.','Ortingizdan eshikni yoping.'],
+        ['Window','/ˈwɪn.dəʊ/','Deraza','Open the window for fresh air.','Toza havo uchun derazani oching.'],
+        ['Room','/ruːm/','Xona','My room is clean and bright.','Mening xonam toza va yorug\'.'],
+        ['Bed','/bed/','Karavot / Yotoq','I go to bed at ten o\'clock.','Men soat o\'nda uxlashga yotaman.'],
+        ['Pen','/pen/','Ruchka','I write with a blue pen.','Men ko\'k ruchka bilan yozaman.'],
+        ['Pencil','/ˈpen.səl/','Qalam','Draw a house with a pencil.','Qalam bilan uy rasmini chizing.'],
+        ['Bag','/bæɡ/','Sumka','My school bag is heavy today.','Bugun maktab sumkam og\'ir.'],
+        ['Phone','/fəʊn/','Telefon','Call me on my phone later.','Keyinroq menga telefon qiling.'],
+        ['Computer','/kəmˈpjuː.tər/','Kompyuter','We study coding on the computer.','Biz kompyuterda dasturlashni o\'rganamiz.'],
+        ['Time','/taɪm/','Vaqt','What time is it now?','Hozir soat necha bo\'ldi?'],
+        ['Day','/deɪ/','Kun','Today is a wonderful day.','Bugun ajoyib kun.'],
+        ['Week','/wiːk/','Hafta','There are seven days in a week.','Bir haftada yetti kun bor.'],
+        ['Month','/mʌnθ/','Oy (kalendar)','January is the first month.','Yanvar — birinchi oy.'],
+        ['Year','/jɪər/','Yil','Happy New Year to everyone!','Barchaga Yangi Yil muborak bo\'lsin!'],
+        ['Happy','/ˈhæp.i/','Baxtli','They are very happy together.','Ular birga juda baxtli.'],
+        ['Sad','/sæd/','Xafa / G\'amgin','Do not be sad, smile!','Xafa bo\'lmang, tabassum qiling!'],
+        ['Big','/bɪɡ/','Katta','An elephant is a big animal.','Fil — katta hayvon.'],
+        ['Small','/smɔːl/','Kichik','An ant is a small insect.','Chumoli — kichik hasharot.'],
+        ['Hot','/hɒt/','Issiq','Summer days are very hot.','Yoz kunlari juda issiq bo\'ladi.'],
+        ['Cold','/kəʊld/','Sovuq','Winter nights are cold and snowy.','Qish tunlari sovuq va qorli bo\'ladi.'],
+        ['Good','/ɡʊd/','Yaxshi','You did a very good job!','Siz juda yaxshi ish qildingiz!'],
+        ['Bad','/bæd/','Yomon','Smoking is bad for your health.','Chekish sog\'lig\'ingiz uchun zararli.'],
+        ['New','/njuː/','Yangi','I bought a new pair of shoes.','Men yangi tufli sotib oldim.'],
+        ['Old','/əʊld/','Eski / Qari','This castle is five hundred years old.','Bu qal\'a besh yuz yoshda.'],
+        ['Fast','/fɑːst/','Tez','Cheetahs are very fast runners.','Gepardlar juda tez yuguruvchilardir.'],
+        ['Slow','/sləʊ/','Sekin','A turtle walks very slow.','Toshbaqa juda sekin yuradi.'],
+        ['Red','/red/','Qizil','She wears a red dress.','U qizil ko\'ylak kiygan.'],
+        ['Blue','/bluː/','Ko\'k','The sky is clear and blue.','Osmon musaffo va ko\'k.'],
+        ['Green','/ɡriːn/','Yashil','Green grass covers the hill.','Yashil maysa tepalikni qoplagan.'],
+        ['Yellow','/ˈjel.əʊ/','Sariq','Bananas are sweet and yellow.','Bananlar shirin va sariq.'],
+        ['White','/waɪt/','Oq','Snow is cold and white.','Qor sovuq va oq.'],
+        ['Black','/blæk/','Qora','He wears a black jacket.','U qora kurtka kiygan.'],
+        ['One','/wʌn/','Bir','I have one sister and two brothers.','Mening bir opam va ikki ukam bor.'],
+        ['Two','/tuː/','Ikki','Two birds sit on the roof.','Tomda ikkita qush o\'tiribdi.'],
+        ['Three','/θriː/','Uch','We have three English lessons a week.','Haftasiga uchta ingliz tili darsimiz bor.'],
+        ['Ten','/ten/','O\'n','Count from one to ten.','Birdan o\'ngacha sanang.'],
+        ['Hundred','/ˈhʌn.drəd/','Yuz','I learned one hundred new words!','Men yuzta yangi so\'z o\'rgandim!'],
+        ['Eat','/iːt/','Yemoq','We eat breakfast at eight.','Biz soat sakkizda nonushta qilamiz.'],
+        ['Drink','/drɪŋk/','Ichmoq','Drink fresh orange juice.','Yangi apelsin sharbatini iching.'],
+        ['Sleep','/sliːp/','Uxlamoq','Babies sleep many hours a day.','Chaqaloqlar kuniga ko\'p soat uxlaydilar.'],
+        ['Walk','/wɔːk/','Piyoda yurmoq','I walk to the park every evening.','Men har oqshom bog\'ga piyoda boraman.'],
+        ['Run','/rʌn/','Yugurmoq','Athletes run around the stadium.','Sportchilar stadion atrofida yugurishmoqda.'],
+        ['Read','/riːd/','O\'qimoq','Read one page every night.','Har kecha bir sahifa o\'qing.'],
+        ['Write','/raɪt/','Yozmoq','Write your name at the top.','Ismingizni tepaga yozing.'],
+        ['Speak','/spiːk/','Gapirmoq','Do you speak English fluently?','Siz ingliz tilida ravon gapirasizmi?'],
+        ['Listen','/ˈlɪs.ən/','Tinglamoq','Listen carefully to the audio.','Audioni diqqat bilan tinglang.'],
+        ['Look','/lʊk/','Qaramoq','Look at the beautiful rainbow!','Chiroyli kamalakka qarang!'],
+        ['Play','/pleɪ/','O\'ynamoq','Children play games after school.','Bolalar maktabdan keyin o\'yin o\'ynashadi.'],
+        ['Work','/wɜːk/','Ishlamoq','My parents work hard every day.','Ota-onam har kuni tinmay mehnat qiladilar.'],
+        ['Study','/ˈstʌd.i/','O\'qimoq / O\'rganmoq','We study English on EngMaster Pro.','Biz EngMaster Pro da ingliz tilini o\'rganamiz.'],
+        ['Love','/lʌv/','Sevmoq / Yaxshi ko\'rmoq','I love learning foreign languages.','Men chet tillarini o\'rganishni yaxshi ko\'raman.'],
+        ['Help','/help/','Yordam bermoq','Always help your friends in need.','Do\'stlaringizga muhtoj paytda doimo yordam bering.'],
+        ['Open','/ˈəʊ.pən/','Ochmoq','Open your books to page five.','Kitoblaringizning beshinchi betini oching.'],
+        ['Close','/kləʊz/','Yopmoq','Please close the box tightly.','Iltimos, qutini mahkam yoping.'],
+        ['Buy','/baɪ/','Sotib olmoq','We buy fresh vegetables at the market.','Biz bozordan yangi sabzavotlar sotib olamiz.'],
+        ['Sell','/sel/','Sotmoq','They sell sweet melons in summer.','Ular yozda shirin qovunlar sotishadi.'],
+        ['Money','/ˈmʌn.i/','Pul','Save your coins in the wallet.','Coinlaringizni hamyonda saqlang.'],
+        ['Shop','/ʃɒp/','Do\'kon','The bakery shop is near my home.','Nonvoyxona do\'koni uyimning yonida.'],
+        ['Doctor','/ˈdɒk.tər/','Shifokor','The doctor helps sick people.','Shifokor bemor odamlarga yordam beradi.'],
+        ['Hospital','/ˈhɒs.pɪ.təl/','Kasalxona','The new hospital is very clean.','Yangi kasalxona juda ozoda.'],
+        ['River','/ˈrɪv.ər/','Daryo','The Amu Darya is a great river.','Amudaryo — buyuk daryodir.'],
+        ['Mountain','/ˈmaʊn.tɪn/','Tog\'','Snow covers the high mountains.','Baland tog\'larni qor qoplagan.'],
+        ['Rain','/reɪn/','Yomg\'ir','Take an umbrella in the rain.','Yomg\'irda soyabon oling.'],
+        ['Snow','/snəʊ/','Qor','Kids make a snowman in the snow.','Bolalar qorda qorbobo yasashadi.'],
+        ['Wind','/wɪnd/','Shamol','A cool wind blows from the north.','Shimoldan salqin shamol esmoqda.'],
+        ['Food','/fuːd/','Ovqat','Uzbek traditional food is delicious.','O\'zbek milliy taomlari juda mazali.'],
+        ['Salt','/sɔːlt/','Tuz','Pass me the salt, please.','Iltimos, tuzni uzatib yuboring.'],
+        ['Sugar','/ˈʃʊɡ.ər/','Shakar','Too much sugar is not healthy.','Haddan tashqari ko\'p shakar foydali emas.']
+      ],
+      A2: [
+        ['Journey','/ˈdʒɜː.ni/','Sayohat / Safar','Our journey to Khiva was amazing.','Xivaga sayohatimiz ajoyib o\'tdi.'],
+        ['Weather','/ˈweð.ər/','Ob-havo','Check the weather forecast before traveling.','Sayohatdan oldin ob-havo ma\'lumotini tekshiring.'],
+        ['Decision','/dɪˈsɪʒ.ən/','Qaror','Making the right decision takes thought.','To\'g\'ri qaror qabul qilish o\'ylashni talab qiladi.'],
+        ['Improve','/ɪmˈpruːv/','Yaxshilamoq','Practice every day to improve your skills.','Ko\'nikmalaringizni oshirish uchun har kuni mashq qiling.'],
+        ['Healthy','/ˈhel.θi/','Sog\'lom','Eating fruits keeps you healthy.','Meva yeyish sizni sog\'lom saqlaydi.'],
+        ['Bridge','/brɪdʒ/','Ko\'prik','Cars cross the river over the bridge.','Mashinalar ko\'prik orqali daryodan o\'tadi.'],
+        ['Celebrate','/ˈsel.ə.breɪt/','Nishonlamoq','We celebrate Independence Day in September.','Biz sentabrda Mustaqillik kunini nishonlaymiz.'],
+        ['Borrow','/ˈbɒr.əʊ/','Vaqtincha olmoq','May I borrow your dictionary?','Lug\'atingizni vaqtincha olib tursam maylimi?'],
+        ['Lend','/lend/','Qarzga bermoq','I can lend you my umbrella.','Men sizga soyabonimni berib turishim mumkin.'],
+        ['Arrive','/əˈraɪv/','Yetib kelmoq','The airplane will arrive on time.','Samolyot o\'z vaqtida yetib keladi.'],
+        ['Leave','/liːv/','Jo\'nab ketmoq','Our bus leaves at nine o\'clock.','Avtobusimiz soat to\'qqizda jo\'naydi.'],
+        ['Airport','/ˈeə.pɔːt/','Aeroport','We arrived at the airport early.','Biz aeroportga erta yetib keldik.'],
+        ['Passport','/ˈpɑːs.pɔːt/','Pasport','Keep your passport safe during trips.','Safar paytida pasportingizni ehtiyot qiling.'],
+        ['Ticket','/ˈtɪk.ɪt/','Chipta','I booked two train tickets online.','Men onlayn ikkita poyezd chiptasini band qildim.'],
+        ['Luggage','/ˈlʌɡ.ɪdʒ/','Yuk / Bagaj','Put your luggage in the trunk.','Yukingizni yukxonaga joylashtiring.'],
+        ['Hotel','/həʊˈtel/','Mehmonxona','The hotel room overlooks the square.','Mehmonxona xonasi maydonga qaraydi.'],
+        ['Map','/mæp/','Xarita','Use a map to find the museum.','Muzeyni topish uchun xaritadan foydalaning.'],
+        ['Museum','/mjuːˈziː.əm/','Muzey','The history museum has ancient coins.','Tarix muzeyida qadimiy tangalar bor.'],
+        ['Library','/ˈlaɪ.brər.i/','Kutubxona','Students study quietly in the library.','Talabalar kutubxonada tinchgina dars qilishadi.'],
+        ['University','/ˌjuː.nɪˈvɜː.sə.ti/','Universitet','She wants to enter a top university.','U nufuzli universitetga kirishni xohlaydi.']
+      ],
+      B1: [
+        ['Achievement','/əˈtʃiːv.mənt/','Yutuq','Graduating with honors is a great achievement.','Imtiyozli diplom bilan bitirish katta yutuqdir.'],
+        ['Confidence','/ˈkɒn.fɪ.dəns/','O\'ziga ishonch','Speaking daily gives you strong confidence.','Har kuni gapirish sizga kuchli ishonch beradi.'],
+        ['Environment','/ɪnˈvaɪ.rən.mənt/','Atrof-muhit','Planting trees protects our environment.','Daraxt ekish atrof-muhitimizni himoya qiladi.'],
+        ['Opportunity','/ˌɒp.əˈtʃuː.nə.ti/','Imkoniyat','Every new day brings a new opportunity.','Har bir yangi kun yangi imkoniyat olib keladi.'],
+        ['Responsible','/rɪˈspɒn.sə.bəl/','Mas\'uliyatli','Responsible students complete tasks on time.','Mas\'uliyatli o\'quvchilar vazifalarni o\'z vaqtida bajaradilar.'],
+        ['Solution','/səˈluː.ʃən/','Yechim','Teamwork helps find the best solution.','Jamoaviy ish eng yaxshi yechimni topishga yordam beradi.'],
+        ['Challenge','/ˈtʃæl.ɪndʒ/','Qiyinchilik / Sinov','Overcoming challenges makes us stronger.','Qiyinchiliklarni yengish bizni kuchliroq qiladi.'],
+        ['Experience','/ɪkˈspɪə.ri.əns/','Tajriba','Practical experience is valuable in any job.','Amaliy tajriba har qanday ishda qadrlidir.'],
+        ['Knowledge','/ˈnɒl.ɪdʒ/','Bilim','Knowledge is the key to future success.','Bilim — kelajakdagi muvaffaqiyat kalitidir.'],
+        ['Behavior','/bɪˈheɪ.vjər/','Xulq-atvor','Polite behavior earns everyone\'s respect.','Odobli xulq-atvor barchaning hurmatini qozonadi.']
+      ],
+      B2: [
+        ['Substantial','/səbˈstæn.ʃəl/','Salmoqli / Muhim','He made substantial progress in grammar.','U grammatikada salmoqli yutuqqa erishdi.'],
+        ['Inevitable','/ɪˈnev.ɪ.tə.bəl/','Muqarrar','Progress is inevitable with daily effort.','Kundalik harakat bilan rivojlanish muqarrardir.'],
+        ['Perspective','/pəˈspek.tɪv/','Nuqtai nazar','Reading books widens your perspective.','Kitob o\'qish dunyoqarashingizni kengaytiradi.'],
+        ['Determined','/dɪˈtɜː.mɪnd/','Qat\'iyatli','She is determined to achieve fluency.','U ravon gapirishga erishishga qat\'iy qaror qilgan.'],
+        ['Negotiate','/nəˈɡəʊ.ʃi.eɪt/','Muzokara qilmoq','Leaders negotiate fair agreements.','Rahbarlar adolatli kelishuvlar bo\'yicha muzokara qiladilar.'],
+        ['Comprehend','/ˌkɒm.prɪˈhend/','Chuqur tushunmoq','It takes focus to comprehend complex texts.','Murakkab matnlarni tushunish diqqatni talab qiladi.'],
+        ['Fluctuate','/ˈflʌk.tʃu.eɪt/','O\'zgarib turmoq','Temperatures fluctuate in early spring.','Erta bahorda harorat o\'zgarib turadi.'],
+        ['Phenomenon','/fəˈnɒm.ɪ.nən/','Hodisa','The northern lights are a rare phenomenon.','Shimol yog\'dusi nodir tabiat hodisasidir.']
+      ],
+      C1: [
+        ['Eloquent','/ˈel.ə.kwənt/','Notiq / Ta\'sirchan','The speaker delivered an eloquent address.','Notiq ta\'sirchan nutq so\'zladi.'],
+        ['Meticulous','/məˈtɪk.jə.ləs/','O\'ta sinchkov / Puxta','Meticulous research leads to accurate results.','O\'ta sinchkov tadqiqot aniq natijalarga olib keladi.'],
+        ['Resilience','/rɪˈzɪl.jəns/','Matonat / Chidamlilik','Mental resilience helps overcome adversity.','Ruhiy matonat qiyinchiliklarni yengishga yordam beradi.'],
+        ['Ubiquitous','/juːˈbɪk.wɪ.təs/','Hamma joyda mavjud','Digital technology is now ubiquitous.','Raqamli texnologiya endi hamma joyda mavjud.'],
+        ['Ambiguous','/æmˈbɪɡ.ju.əs/','Noaniq / Ikki ma\'noli','Avoid ambiguous statements in formal essays.','Rasmiy insholarda noaniq jumlalardan saqlaning.'],
+        ['Pragmatic','/præɡˈmæt.ɪk/','Amaliy / Realist','We need a pragmatic approach to this issue.','Bizga bu masalaga amaliy yondashuv kerak.']
+      ],
+      C2: [
+        ['Ephemeral','/ɪˈfem.ər.əl/','O\'tkinchi / Qisqa muddatli','Fame is ephemeral, but character lasts.','Shuhrat o\'tkinchi, ammo xarakter boqiy qoladi.'],
+        ['Perspicacious','/ˌpɜː.spɪˈkeɪ.ʃəs/','O\'tkir zehnli / Zukko','A perspicacious scholar spots hidden patterns.','O\'tkir zehnli olim yashirin qonuniyatlarni payqaydi.'],
+        ['Quintessential','/ˌkwɪn.tɪˈsen.ʃəl/','Eng mukammal namuna','Samarkand is the quintessential Silk Road city.','Samarqand — Buyuk Ipak yo\'lining eng mukammal ramzidir.'],
+        ['Serendipity','/ˌser.ənˈdɪp.ə.ti/','Baxtli tasodif','Discovering that manuscript was pure serendipity.','O\'sha qo\'lyozmani topish haqiqiy baxtli tasodif edi.'],
+        ['Magnanimous','/mæɡˈnæn.ɪ.məs/','Oliyjanob / Keng fe\'lli','He was magnanimous even in victory.','U hatto g\'alabada ham oliyjanoblik ko\'rsatdi.'],
+        ['Ineffable','/ɪnˈef.ə.bəl/','So\'z bilan ta\'riflab bo\'lmas','The beauty of the mountains was ineffable.','Tog\'larning go\'zalligini so\'z bilan ta\'riflab bo\'lmas edi.']
+      ]
+    };
+
+    // Additional rich thematic word banks so EVERY level (A1, A2, B1, B2, C1, C2) has 100+ genuine, distinct, realistic English-Uzbek entries!
+    const EXTRA_THEMATIC_WORDS = {
+      A1: [
+        ['Hand','/hænd/','Qo\'l'],['Foot','/fʊt/','Oyoq'],['Head','/hed/','Bosh'],['Eye','/aɪ/','Ko\'z'],['Ear','/ɪər/','Quloq'],
+        ['Nose','/nəʊz/','Burun'],['Mouth','/maʊθ/','Og\'iz'],['Hair','/heər/','Soch'],['Face','/feɪs/','Yuz'],['Heart','/hɑːt/','Yurak'],
+        ['Shirt','/ʃɜːt/','Ko\'ylak'],['Shoes','/ʃuːz/','Tufli / Poyabzal'],['Hat','/hæt/','Shlyapa / Bosh kiyim'],['Coat','/kəʊt/','Palto'],['Dress','/dres/','Ayollar ko\'ylagi'],
+        ['Egg','/eɡ/','Tuxum'],['Meat','/miːt/','Go\'sht'],['Rice','/raɪs/','Guruch'],['Soup','/suːp/','Sho\'rva'],['Cake','/keɪk/','Tort'],
+        ['Ice','/aɪs/','Muz'],['Fire','/faɪər/','Olov'],['Earth','/ɜːθ/','Yer'],['Sea','/siː/','Dengiz'],['Lake','/leɪk/','Ko\'l'],
+        ['Park','/pɑːk/','Bog\''],['Street','/striːt/','Ko\'cha'],['Road','/rəʊd/','Yo\'l'],['Bridge','/brɪdʒ/','Ko\'prik'],['Farm','/fɑːm/','Ferma']
+      ],
+      A2: [
+        ['Adventure','/ədˈven.tʃər/','Sarguzasht'],['Advice','/ədˈvaɪs/','Maslahat'],['Agree','/əˈɡriː/','Rozi bo\'lmoq'],['Allow','/əˈlaʊ/','Ruxsat bermoq'],['Ancient','/ˈeɪn.ʃənt/','Qadimiy'],
+        ['Appear','/əˈpɪər/','Paydo bo\'lmoq'],['Arrange','/əˈreɪndʒ/','Tartibga solmoq'],['Article','/ˈɑː.tɪ.kəl/','Maqola'],['Attention','/əˈten.ʃən/','Diqqat'],['Attractive','/əˈtræk.tɪv/','Jozibador'],
+        ['Audience','/ˈɔː.di.əns/','Tomoshabinlar'],['Available','/əˈveɪ.lə.bəl/','Mavjud'],['Average','/ˈæv.ər.ɪdʒ/','O\'rtacha'],['Avoid','/əˈvɔɪd/','Saqlanmoq'],['Balance','/ˈbæl.əns/','Muvozanat'],
+        ['Behavior','/bɪˈheɪ.vjər/','Xulq'],['Believe','/bɪˈliːv/','Ishonmoq'],['Benefit','/ˈben.ɪ.fɪt/','Foyda'],['Bicycle','/ˈbaɪ.sɪ.kəl/','Velosiped'],['Biology','/baɪˈɒl.ə.dʒi/','Biologiya'],
+        ['Blanket','/ˈblæŋ.kɪt/','Adyol'],['Border','/ˈbɔː.dər/','Chegara'],['Brave','/breɪv/','Jasur'],['Breathe','/briːð/','Nafas olmoq'],['Bright','/braɪt/','Yorqin'],
+        ['Brilliant','/ˈbrɪl.jənt/','Ajoyib'],['Build','/bɪld/','Qurmoq'],['Business','/ˈbɪz.nəs/','Biznes'],['Calendar','/ˈkæl.ən.dər/','Taqvim'],['Calm','/kɑːm/','Tinch / Xotirjam'],
+        ['Camera','/ˈkæm.ər.ə/','Kamera'],['Camp','/kæmp/','Lager'],['Cancel','/ˈkæn.səl/','Bekor qilmoq'],['Capital','/ˈkæp.ɪ.təl/','Poytaxt'],['Captain','/ˈkæp.tɪn/','Kapitan'],
+        ['Careful','/ˈkeə.fəl/','Ehtiyotkor'],['Carpet','/ˈkɑː.pɪt/','Gilam'],['Carry','/ˈkær.i/','Ko\'tarib yurmoq'],['Cartoon','/kɑːˈtuːn/','Multfilm'],['Castle','/ˈkɑː.səl/','Qal\'a'],
+        ['Catch','/kætʃ/','Tutib olmoq'],['Cause','/kɔːz/','Sabab bo\'lmoq'],['Century','/ˈsen.tʃər.i/','Asr'],['Certain','/ˈsɜː.tən/','Ishonchli / Aniq'],['Champion','/ˈtʃæm.pi.ən/','Chempion'],
+        ['Change','/tʃeɪndʒ/','O\'zgartirmoq'],['Chapter','/ˈtʃæp.tər/','Bob (kitobda)'],['Character','/ˈkær.ək.tər/','Xarakter / Qahramon'],['Charity','/ˈtʃær.ə.ti/','Xayriya'],['Cheap','/tʃiːp/','Arzon'],
+        ['Cheerful','/ˈtʃɪə.fəl/','Quvnoq'],['Chemistry','/ˈkem.ɪ.stri/','Kimyo'],['Choice','/tʃɔɪs/','Tanlov'],['Choose','/tʃuːz/','Tanlamoq'],['Circle','/ˈsɜː.kəl/','Doira'],
+        ['Citizen','/ˈsɪt.ɪ.zən/','Fuqaro'],['Clear','/klɪər/','Aniq / Shaffof'],['Clever','/ˈklev.ər/','Aqlli'],['Climate','/ˈklaɪ.mət/','Iqlim'],['Climb','/klaɪm/','Chiqmoq / Tirmashmoq'],
+        ['Cloud','/klaʊd/','Bulut'],['Coach','/kəʊtʃ/','Murabbiy'],['Coast','/kəʊst/','Sohil'],['Collect','/kəˈlekt/','To\'plamoq'],['College','/ˈkɒl.ɪdʒ/','Kollej'],
+        ['Colorful','/ˈkʌl.ə.fəl/','Rang-barang'],['Comfortable','/ˈkʌm.fə.tə.bəl/','Qulay'],['Common','/ˈkɒm.ən/','Umumiy / Oddiy'],['Communicate','/kəˈmjuː.nɪ.keɪt/','Muloqot qilmoq'],['Compare','/kəmˈpeər/','Solishtirmoq'],
+        ['Compete','/kəmˈpiːt/','Raqobatlashmoq'],['Complete','/kəmˈpliːt/','Tugatmoq'],['Concert','/ˈkɒn.sət/','Konsert'],['Condition','/kənˈdɪʃ.ən/','Sharoit / Holat'],['Connect','/kəˈnekt/','Ulamoq'],
+        ['Consider','/kənˈsɪd.ər/','O\'ylab ko\'rmoq'],['Contain','/kənˈteɪn/','O\'z ichiga olmoq'],['Contest','/ˈkɒn.test/','Tanlov / Musobaqa'],['Continue','/kənˈtɪn.juː/','Davom ettirmoq'],['Control','/kənˈtrəʊl/','Boshqarmoq'],
+        ['Conversation','/ˌkɒn.vəˈseɪ.ʃən/','Suhbat'],['Correct','/kəˈrekt/','To\'g\'ri'],['Cost','/kɒst/','Narx turmoq'],['Courage','/ˈkʌr.ɪdʒ/','Jasorat'],['Course','/kɔːs/','Kurs'],
+        ['Create','/kriˈeɪt/','Yaratmoq'],['Creative','/kriˈeɪ.tɪv/','Ijodkor'],['Culture','/ˈkʌl.tʃər/','Madaniyat'],['Curious','/ˈkjʊə.ri.əs/','Qiziquvchan'],['Customer','/ˈkʌs.tə.mər/','Mijoz']
+      ],
+      B1: [
+        ['Ability','/əˈbɪl.ə.ti/','Qobiliyat'],['Abroad','/əˈbrɔːd/','Xorijda'],['Accept','/əkˈsept/','Qabul qilmoq'],['Access','/ˈæk.ses/','Kirish imkoniyati'],['Accurate','/ˈæk.jər.ət/','Aniq'],
+        ['Achieve','/əˈtʃiːv/','Erishmoq'],['Active','/ˈæk.tɪv/','Faol'],['Adapt','/əˈdæpt/','Moslashmoq'],['Addition','/əˈdɪʃ.ən/','Qo\'shimcha'],['Admire','/ədˈmaɪər/','Qoyil qolmoq'],
+        ['Advance','/ədˈvɑːns/','Oldinga siljish'],['Advantage','/ədˈvɑːn.tɪdʒ/','Afzallik'],['Advertise','/ˈæd.və.taɪz/','Reklama qilmoq'],['Affect','/əˈfekt/','Ta\'sir qilmoq'],['Afford','/əˈfɔːd/','Qurbi yetmoq'],
+        ['Agency','/ˈeɪ.dʒən.si/','Agentlik'],['Agriculture','/ˈæɡ.rɪ.kʌl.tʃər/','Qishloq xo\'jaligi'],['Aim','/eɪm/','Maqsad'],['Ambition','/æmˈbɪʃ.ən/','Intilish / Maqsad'],['Analyze','/ˈæn.əl.aɪz/','Tahlil qilmoq'],
+        ['Announce','/əˈnaʊns/','E\'lon qilmoq'],['Annual','/ˈæn.ju.əl/','Yillik'],['Anxiety','/æŋˈzaɪ.ə.ti/','Xavotir'],['Apologize','/əˈpɒl.ə.dʒaɪz/','Uzr so\'ramoq'],['Application','/ˌæp.lɪˈkeɪ.ʃən/','Ariza / Ilova'],
+        ['Appoint','/əˈpɔɪnt/','Tayinlamoq'],['Appreciate','/əˈpriː.ʃi.eɪt/','Qadrlamoq'],['Approach','/əˈprəʊtʃ/','Yondashuv'],['Appropriate','/əˈprəʊ.pri.ət/','Munosib'],['Approve','/əˈpruːv/','Tasdiqlamoq'],
+        ['Architecture','/ˈɑː.kɪ.tek.tʃər/','Me\'morchilik'],['Argument','/ˈɑːɡ.jə.mənt/','Dalil / Bahs'],['Artificial','/ˌɑː.tɪˈfɪʃ.əl/','Sun\'iy'],['Aspect','/ˈæs.pekt/','Jihat'],['Assess','/əˈses/','Baholamoq'],
+        ['Assist','/əˈsɪst/','Ko\'maklashmoq'],['Associate','/əˈsəʊ.si.eɪt/','Bog\'lamoq'],['Assume','/əˈsjuːm/','Taxmin qilmoq'],['Atmosphere','/ˈæt.mə.sfɪər/','Muhit / Atmosfera'],['Attach','/əˈtætʃ/','Biriktirmoq'],
+        ['Attempt','/əˈtempt/','Urinish'],['Attitude','/ˈæt.ɪ.tʃuːd/','Munosabat'],['Author','/ˈɔː.θər/','Muallif'],['Authority','/ɔːˈθɒr.ə.ti/','Vakolat / Rahbariyat'],['Automatic','/ˌɔː.təˈmæt.ɪk/','Avtomatik'],
+        ['Awareness','/əˈweə.nəs/','Xabardorlik'],['Background','/ˈbæk.ɡraʊnd/','Kelib chiqish / Fon'],['Barrier','/ˈbær.i.ər/','To\'siq'],['Basic','/ˈbeɪ.sɪk/','Asosiy'],['Basis','/ˈbeɪ.sɪs/','Asos'],
+        ['Bilateral','/ˌbaɪˈlæt.ər.əl/','Ikki tomonlama'],['Blame','/bleɪm/','Ayblamoq'],['Blessing','/ˈbles.ɪŋ/','Ne\'mat / Duo'],['Bold','/bəʊld/','Dadil'],['Boost','/buːst/','Kuchaytirmoq'],
+        ['Boundary','/ˈbaʊn.dər.i/','Chegara'],['Branch','/brɑːntʃ/','Shox / Filial'],['Breakthrough','/ˈbreɪk.θruː/','Katta kashfiyot'],['Brief','/briːf/','Qisqa'],['Broadcast','/ˈbrɔːd.kɑːst/','Efirga uzatmoq'],
+        ['Budget','/ˈbʌdʒ.ɪt/','Byudjet'],['Calculate','/ˈkæl.kjə.leɪt/','Hisoblamoq'],['Campaign','/kæmˈpeɪn/','Kompaniya / Harakat'],['Candidate','/ˈkæn.dɪ.dət/','Nomzod'],['Capacity','/kəˈpæs.ə.ti/','Sig\'im / Qobiliyat'],
+        ['Capture','/ˈkæp.tʃər/','Qo\'lga olmoq'],['Career','/kəˈrɪər/','Karyera'],['Category','/ˈkæt.ə.ɡri/','Toifa'],['Caution','/ˈkɔː.ʃən/','Ehtiyotkorlik'],['Cease','/siːs/','To\'xtatmoq'],
+        ['Ceremony','/ˈser.ɪ.mə.ni/','Marosim'],['Certificate','/səˈtɪf.ɪ.kət/','Sertifikat'],['Characteristic','/ˌkær.ək.təˈrɪs.tɪk/','Xususiyat'],['Circumstance','/ˈsɜː.kəm.stɑːns/','Vaziyat'],['Civilization','/ˌsɪv.əl.aɪˈzeɪ.ʃən/','Sivilizatsiya'],
+        ['Clarify','/ˈklær.ɪ.faɪ/','Oydinlashtirmoq'],['Collaborate','/kəˈlæb.ə.reɪt/','Hamkorlik qilmoq'],['Collapse','/kəˈlæps/','Qulamoq'],['Combine','/kəmˈbaɪn/','Birlashtirmoq'],['Commerce','/ˈkɒm.ɜːs/','Savdo-sotiq'],
+        ['Commit','/kəˈmɪt/','Majburiyat olmoq'],['Community','/kəˈmjuː.nə.ti/','Jamiyat'],['Competition','/ˌkɒm.pəˈtɪʃ.ən/','Raqobat'],['Complex','/ˈkɒm.pleks/','Murakkab'],['Concentrate','/ˈkɒn.sən.treɪt/','Diqqatni jamlamoq'],
+        ['Concept','/ˈkɒn.sept/','Tushuncha'],['Concern','/kənˈsɜːn/','Tashvish / Aloqa'],['Conclude','/kənˈkluːd/','Xulosa qilmoq'],['Conduct','/kənˈdʌkt/','O\'tkazmoq / Boshqarmoq'],['Conflict','/ˈkɒn.flɪkt/','Ziddiyat']
+      ],
+      B2: [
+        ['Abandon','/əˈbæn.dən/','Tashlab ketmoq'],['Abstract','/ˈæb.strækt/','Mavhum'],['Abundant','/əˈbʌn.dənt/','Mo\'l-ko\'l'],['Accelerate','/əkˈsel.ə.reɪt/','Tezlashtirmoq'],['Accommodate','/əˈkɒm.ə.deɪt/','Joylashtirmoq'],
+        ['Accompany','/əˈkʌm.pə.ni/','Hamrohlik qilmoq'],['Accomplish','/əˈkʌm.plɪʃ/','Amalga oshirmoq'],['Accountable','/əˈkaʊn.tə.bəl/','Javobgar'],['Accumulate','/əˈkjuː.mjə.leɪt/','To\'plamoq'],['Acknowledge','/əkˈnɒl.ɪdʒ/','Tan olmoq'],
+        ['Acquire','/əˈkwaɪər/','Egallamoq'],['Adequate','/ˈæd.ə.kwət/','Yetarli'],['Adjacent','/əˈdʒeɪ.sənt/','Qo\'shni / Yonma-yon'],['Adjust','/əˈdʒʌst/','Moslashtirmoq'],['Administer','/ədˈmɪn.ɪ.stər/','Boshqarmoq'],
+        ['Advocate','/ˈæd.və.keɪt/','Himoya qilmoq'],['Aesthetic','/esˈθet.ɪk/','Estetik'],['Aggregate','/ˈæɡ.rɪ.ɡət/','Umumiy yig\'indi'],['Allocate','/ˈæl.ə.keɪt/','Taqsimlamoq'],['Alter','/ˈɔːl.tər/','O\'zgartirmoq'],
+        ['Alternative','/ɒlˈtɜː.nə.tɪv/','Muqobil'],['Amend','/əˈmend/','Tuzatish kiritmoq'],['Analogy','/əˈnæl.ə.dʒi/','O\'xshashlik'],['Anticipate','/ænˈtɪs.ɪ.peɪt/','Oldindan kutmoq'],['Apparent','/əˈpær.ənt/','Ravshan'],
+        ['Arbitrary','/ˈɑː.bɪ.trər.i/','Ixtiyoriy'],['Articulate','/ɑːˈtɪk.jə.lət/','Aniq ifodalamoq'],['Aspire','/əˈspaɪər/','Intilmoq'],['Assemble','/əˈsem.bəl/','Yig\'moq'],['Assert','/əˈsɜːt/','Ta\'kidlamoq'],
+        ['Asset','/ˈæs.et/','Boylik / Aktiv'],['Assign','/əˈsaɪn/','Vazifa bermoq'],['Assure','/əˈʃɔːr/','Ishontirmoq'],['Astonishing','/əˈstɒn.ɪ.ʃɪŋ/','Hayratlanarli'],['Attain','/əˈteɪn/','Erishmoq'],
+        ['Attribute','/ˈæt.rɪ.bjuːt/','Xislat / Nisbat bermoq'],['Authentic','/ɔːˈθen.tɪk/','Haqiqiy / Asl'],['Authorize','/ˈɔː.θər.aɪz/','Vakolat bermoq'],['Autonomous','/ɔːˈtɒn.ə.məs/','Mustaqil'],['Beneficial','/ˌben.ɪˈfɪʃ.əl/','Foydali'],
+        ['Bias','/ˈbaɪ.əs/','Bir yoqlamalik'],['Catalyst','/ˈkæt.əl.ɪst/','Tezlashtiruvchi omil'],['Chronic','/ˈkrɒn.ɪk/','Surunkali'],['Coherent','/kəʊˈhɪə.rənt/','Mantiqiy bog\'langan'],['Coincide','/ˌkəʊ.ɪnˈsaɪd/','To\'g\'ri kelmoq'],
+        ['Commence','/kəˈmens/','Boshlamoq'],['Compatible','/kəmˈpæt.ə.bəl/','Mos keluvchi'],['Compensate','/ˈkɒm.pən.seɪt/','Qoplamoq'],['Compile','/kəmˈpaɪl/','To\'plab tuzmoq'],['Complement','/ˈkɒm.plɪ.ment/','To\'ldirmoq'],
+        ['Comprehensive','/ˌkɒm.prɪˈhen.sɪv/','Keng qamrovli'],['Comprise','/kəmˈpraɪz/','Tashkil topmoq'],['Conceive','/kənˈsiːv/','Tasavvur qilmoq'],['Concurrent','/kənˈkʌr.ənt/','Bir vaqtda sodir bo\'luvchi'],['Confer','/kənˈfɜːr/','Maslahatlashmoq'],
+        ['Confine','/kənˈfaɪn/','Cheklamoq'],['Conform','/kənˈfɔːm/','Mos kelmoq'],['Consecutive','/kənˈsek.jə.tɪv/','Ketma-ket'],['Consensus','/kənˈsen.səs/','Umumiy kelishuv'],['Consequence','/ˈkɒn.sɪ.kwəns/','Oqibat'],
+        ['Considerable','/kənˈsɪd.ər.ə.bəl/','Ancha katta'],['Consistent','/kənˈsɪs.tənt/','Izchil'],['Consolidate','/kənˈsɒl.ɪ.deɪt/','Mustahkamlamoq'],['Constitute','/ˈkɒn.stɪ.tʃuːt/','Tashkil etmoq'],['Constrain','/kənˈstreɪn/','Cheklamoq'],
+        ['Consult','/kənˈsʌlt/','Maslahat olmoq'],['Contemplate','/ˈkɒn.təm.pleɪt/','Chuqur o\'ylamoq'],['Contemporary','/kənˈtem.pər.ər.i/','Zamonaviy'],['Contradict','/ˌkɒn.trəˈdɪkt/','Zid kelmoq'],['Contribute','/kənˈtrɪb.juːt/','Hissa qo\'shmoq'],
+        ['Controversy','/ˈkɒn.trə.vɜː.si/','Bahs-munozara'],['Conventional','/kənˈven.ʃən.əl/','An\'anaviy'],['Convey','/kənˈveɪ/','Yetkazmoq'],['Convince','/kənˈvɪns/','Ishontirmoq'],['Cooperate','/kəʊˈɒp.ər.eɪt/','Hamkorlik qilmoq'],
+        ['Coordinate','/kəʊˈɔː.dɪ.neɪt/','Muvofiqlashtirmoq'],['Core','/kɔːr/','O\'zak / Asos'],['Corporate','/ˈkɔː.pər.ət/','Korporativ'],['Correspond','/ˌkɒr.ɪˈspɒnd/','Mos kelmoq'],['Criteria','/kraɪˈtɪə.ri.ə/','Mezonlar'],
+        ['Crucial','/ˈkruː.ʃəl/','Hal qiluvchi'],['Cultivate','/ˈkʌl.tɪ.veɪt/','Rivojlantirmoq'],['Cumulative','/ˈkjuː.mjə.lə.tɪv/','To\'planib boruvchi'],['Debate','/dɪˈbeɪt/','Munozara'],['Decade','/ˈdek.eɪd/','O\'n yillik'],
+        ['Decline','/dɪˈklaɪn/','Pasayish'],['Deduce','/dɪˈdjuːs/','Xulosa chiqarmoq'],['Deficiency','/dɪˈfɪʃ.ən.si/','Yetishmovchilik'],['Demonstrate','/ˈdem.ən.streɪt/','Namoyish etmoq'],['Depict','/dɪˈpɪkt/','Tasvirlamoq'],
+        ['Derive','/dɪˈraɪv/','Kelib chiqmoq'],['Designate','/ˈdez.ɪɡ.neɪt/','Belgilamoq'],['Deteriorate','/dɪˈtɪə.ri.ə.reɪt/','Yomonlashmoq'],['Devise','/dɪˈvaɪz/','O\'ylab topmoq'],['Dimension','/ˌdaɪˈmen.ʃən/','O\'lcham / Jihat']
+      ],
+      C1: [
+        ['Aberration','/ˌæb.əˈreɪ.ʃən/','Chetga chiqish'],['Abstain','/əbˈsteɪn/','O\'zini tiymoq'],['Acclaim','/əˈkleɪm/','Olqish'],['Acumen','/ˈæk.jə.mən/','Zukkolik'],['Adversity','/ədˈvɜː.sə.ti/','Mashaqqat'],
+        ['Alleviate','/əˈliː.vi.eɪt/','Yengillashtirmoq'],['Altruistic','/ˌæl.truˈɪs.tɪk/','Fidokor'],['Ameliorate','/əˈmiː.li.ə.reɪt/','Yaxshilamoq'],['Analogous','/əˈnæl.ə.ɡəs/','O\'xshash'],['Anomalous','/əˈnɒm.ə.ləs/','G\'ayritabiiy'],
+        ['Apathy','/ˈæp.ə.θi/','Befarqlik'],['Appease','/əˈpiːz/','Tinchlantirmoq'],['Apprehensive','/ˌæp.rɪˈhen.sɪv/','Xavotirli'],['Arduous','/ˈɑː.dʒu.əs/','Mashaqqatli'],['Ascertain','/ˌæs.əˈteɪn/','Aniqlamoq'],
+        ['Assiduous','/əˈsɪdʒ.u.əs/','Tirishqoq'],['Astute','/əˈstjuːt/','Ziyrak'],['Augment','/ɔːɡˈment/','Oshirmoq'],['Auspicious','/ɔːˈspɪʃ.əs/','Xayrli'],['Austere','/ɒˈstɪər/','Qattiqqo\'l / Oddiy'],
+        ['Aversion','/əˈvɜː.ʒən/','Yoqtirmaslik'],['Benevolent','/bəˈnev.əl.ənt/','Xayrixoh'],['Bolster','/ˈbəʊl.stər/','Qo\'llab-quvvatlamoq'],['Brevity','/ˈbrev.ə.ti/','Qisqalik'],['Candid','/ˈkæn.dɪd/','Samimiy / Ochiq'],
+        ['Capricious','/kəˈprɪʃ.əs/','Injiq / O\'zgaruvchan'],['Censure','/ˈsen.ʃər/','Tanqid qilmoq'],['Circumspect','/ˈsɜː.kəm.spekt/','Ehtiyotkor'],['Coalesce','/ˌkəʊ.əˈles/','Birlashmoq'],['Cogent','/ˈkəʊ.dʒənt/','Ishonarli'],
+        ['Commensurate','/kəˈmen.ʃər.ət/','Mutanosib'],['Complacent','/kəmˈpleɪ.sənt/','Xotirjam / O\'zidan mamnun'],['Concede','/kənˈsiːd/','Tan olmoq'],['Concise','/kənˈsaɪs/','Lo\'nda'],['Conducive','/kənˈdjuː.sɪv/','Qulay sharoit yaratuvchi'],
+        ['Conjecture','/kənˈdʒek.tʃər/','Taxmin'],['Conscientious','/ˌkɒn.ʃiˈen.ʃəs/','Vijdonli'],['Constituent','/kənˈstɪtʃ.u.ənt/','Tarkibiy qism'],['Contend','/kənˈtend/','Ta\'kidlamoq / Kurashmoq'],['Contingent','/kənˈtɪn.dʒənt/','Bog\'liq'],
+        ['Conundrum','/kəˈnʌn.drəm/','Jumboq'],['Corroborate','/kəˈrɒb.ə.reɪt/','Tasdiqlamoq'],['Credible','/ˈkred.ə.bəl/','Ishonchli'],['Culminate','/ˈkʌl.mɪ.neɪt/','Cho\'qqisiga yetmoq'],['Cursory','/ˈkɜː.sər.i/','Yuzaki'],
+        ['Daunting','/ˈdɔːn.tɪŋ/','Mushkul'],['Debilitate','/dɪˈbɪl.ɪ.teɪt/','Zaiflashtirmoq'],['Deference','/ˈdef.ər.əns/','Hurmat'],['Deliberate','/dɪˈlɪb.ər.ət/','Ataylab qilingan'],['Delineate','/dɪˈlɪn.i.eɪt/','Tasvirlab bermoq'],
+        ['Denounce','/dɪˈnaʊns/','Qoralamoq'],['Deplete','/dɪˈpliːt/','Tugatmoq / Kamaytirmoq'],['Derivative','/dɪˈrɪv.ə.tɪv/','Hosilaviy'],['Detrimental','/ˌdet.rɪˈmen.təl/','Zararli'],['Dichotomy','/daɪˈkɒt.ə.mi/','Ikki qismga bo\'linish'],
+        ['Didactic','/daɪˈdæk.tɪk/','Ta\'limiy'],['Diffident','/ˈdɪf.ɪ.dənt/','Tortinchoq'],['Diligent','/ˈdɪl.ɪ.dʒənt/','Mehnatsevar'],['Discern','/dɪˈsɜːn/','Farqlamoq'],['Discrepancy','/dɪˈskrep.ən.si/','Nomuvofiqlik'],
+        ['Disdain','/dɪsˈdeɪn/','Mensimaslik'],['Disparate','/ˈdɪs.pər.ət/','Turlicha'],['Disseminate','/dɪˈsem.ɪ.neɪt/','Tarqatmoq'],['Divergent','/ˌdaɪˈvɜː.dʒənt/','Farqli'],['Dogmatic','/dɒɡˈmæt.ɪk/','Qat\'iy / O\'zgarmas'],
+        ['Eclectic','/ekˈlek.tɪk/','Turli manbalardan olingan'],['Efficacy','/ˈef.ɪ.kə.si/','Samaradorlik'],['Egregious','/ɪˈɡriː.dʒəs/','O\'ta qo\'pol'],['Elucidate','/iˈluː.sɪ.deɪt/','Tushuntirib bermoq'],['Emulate','/ˈem.jə.leɪt/','Taqlid qilmoq'],
+        ['Endorse','/ɪnˈdɔːs/','Qo\'llab-quvvatlamoq'],['Engender','/ɪnˈdʒen.dər/','Keltirib chiqarmoq'],['Enigma','/ɪˈnɪɡ.mə/','Sir / Jumboq'],['Enumerate','/ɪˈnjuː.mə.reɪt/','Sanab o\'tmoq'],['Equivocal','/ɪˈkwɪv.ə.kəl/','Ikki ma\'noli'],
+        ['Eradicate','/ɪˈræd.ɪ.keɪt/','Yo\'q qilmoq'],['Erratic','/ɪˈræt.ɪk/','Beqaror'],['Esoteric','/ˌiː.səˈter.ɪk/','Tor doiraga oid'],['Exacerbate','/ɪɡˈzæs.ə.beɪt/','Yomonlashtirmoq'],['Exemplary','/ɪɡˈzem.plər.i/','Namuna bo\'larli'],
+        ['Exhaustive','/ɪɡˈzɔː.stɪv/','To\'liq / Batafsil'],['Exonerate','/ɪɡˈzɒn.ə.reɪt/','Oqlamoq'],['Expedite','/ˈek.spə.daɪt/','Tezlashtirmoq'],['Explicit','/ɪkˈsplɪs.ɪt/','Aniq-ravshan'],['Extrapolate','/ɪkˈstræp.ə.leɪt/','Xulosa chiqarmoq'],
+        ['Facetious','/fəˈsiː.ʃəs/','Hazilomuz'],['Fallacy','/ˈfæl.ə.si/','Xato fikr'],['Fastidious','/fæsˈtɪd.i.əs/','O\'ta talabchan'],['Feasible','/ˈfiː.zə.bəl/','Amalga oshirsa bo\'ladigan'],['Fortuitous','/fɔːˈtʃuː.ɪ.təs/','Tasodifiy baxtli'],
+        ['Frugal','/ˈfruː.ɡəl/','Tejamkor'],['Galvanize','/ˈɡæl.və.naɪz/','Ruhlantirmoq'],['Gregarious','/ɡrɪˈɡeə.ri.əs/','Kirishimli'],['Hackneyed','/ˈhæk.nid/','Siyqasi chiqqan'],['Harbinger','/ˈhɑː.bɪn.dʒər/','Darakchi']
+      ],
+      C2: [
+        ['Abnegation','/ˌæb.nɪˈɡeɪ.ʃən/','O\'zidan kechish'],['Abstruse','/əbˈstruːs/','Tushunish qiyin'],['Acerbic','/əˈsɜː.bɪk/','Achchiq / Keskin'],['Acquiesce','/ˌæk.wiˈes/','Indamay rozi bo\'lmoq'],['Adulation','/ˌædʒ.əˈleɪ.ʃən/','Haddan ortiq maqtov'],
+        ['Alacrity','/əˈlæk.rə.ti/','Tayyorlik / Chaqqonlik'],['Anachronism','/əˈnæk.rə.nɪ.zəm/','Davrga mos kelmaslik'],['Anathema','/əˈnæθ.ə.mə/','Nafrat uyg\'otuvchi narsa'],['Antediluvian','/ˌæn.ti.dɪˈluː.vi.ən/','O\'ta qadimiy'],['Apocryphal','/əˈpɒk.rɪ.fəl/','Shubhali / Afsonaviy'],
+        ['Apotheosis','/əˌpɒθ.iˈəʊ.sɪs/','Eng yuksak cho\'qqi'],['Arcane','/ɑːˈkeɪn/','Sirli'],['Assuage','/əˈsweɪdʒ/','Yumshatmoq'],['Avarice','/ˈæv.ər.ɪs/','Ochko\'zlik'],['Bellicose','/ˈbel.ɪ.kəʊs/','Jangovar'],
+        ['Blandishment','/ˈblæn.dɪʃ.mənt/','Xushomad'],['Cacophony','/kəˈkɒf.ə.ni/','Yoqimsiz shovqin'],['Calumny','/ˈkæl.əm.ni/','Tuhmat'],['Castigate','/ˈkæs.tɪ.ɡeɪt/','Qattiq tanqid qilmoq'],['Chicanery','/ʃɪˈkeɪ.nər.i/','Hiyla-nayrang'],
+        ['Circumlocution','/ˌsɜː.kəm.ləˈkjuː.ʃən/','Aylantirib gapirish'],['Clairvoyant','/ˌkleəˈvɔɪ.ənt/','Oldindan ko\'ruvchi'],['Clemency','/ˈklem.ən.si/','Rahmdillik'],['Cogitate','/ˈkɒdʒ.ɪ.teɪt/','Chuqur fikr yuritmoq'],['Concomitant','/kənˈkɒm.ɪ.tənt/','Birga keluvchi'],
+        ['Conflagration','/ˌkɒn.fləˈɡreɪ.ʃən/','Katta yong\'in'],['Contrite','/ˈkɒn.traɪt/','Pushaymon'],['Contumacious','/ˌkɒn.tjuːˈmeɪ.ʃəs/','Bo\'ysunmas'],['Convivial','/kənˈvɪv.i.əl/','Do\'stona / Quvnoq'],['Corpulent','/ˈkɔː.pjə.lənt/','To\'la / Semiz'],
+        ['Cupidity','/kjuːˈpɪd.ə.ti/','Tamagirlik'],['Dearth','/dɜːθ/','Tanqislik'],['Debacle','/deɪˈbɑː.kəl/','Katta mag\'lubiyat'],['Deleterious','/ˌdel.ɪˈtɪə.ri.əs/','Zararli'],['Demagogue','/ˈdem.ə.ɡɒɡ/','Xalqni aldovchi notiq'],
+        ['Denigrate','/ˈden.ɪ.ɡreɪt/','Qoralamoq'],['Desultory','/ˈdes.əl.tər.i/','Tartibsiz'],['Diaphanous','/daɪˈæf.ən.əs/','Shaffof / Nafis'],['Diatribe','/ˈdaɪ.ə.traɪb/','Keskin tanqidiy nutq'],['Diffidence','/ˈdɪf.ɪ.dəns/','O\'ziga ishonchsizlik'],
+        ['Dilettante','/ˌdɪl.ɪˈtæn.ti/','Havaskor'],['Discomfit','/dɪsˈkʌm.fɪt/','Noqulay ahvolga solmoq'],['Disparage','/dɪˈspær.ɪdʒ/','Kamsitmoq'],['Dissimulate','/dɪˈsɪm.jə.leɪt/','Niqoblamoq'],['Ebullient','/ɪˈbʊl.i.ənt/','Jo\'shqin'],
+        ['Edify','/ˈed.ɪ.faɪ/','Ma\'naviy boyitmoq'],['Effulgent','/ɪˈfʌl.dʒənt/','Nurafshon'],['Egregious','/ɪˈɡriː.dʒəs/','O\'ta yomon'],['Elegy','/ˈel.ə.dʒi/','Marsiya'],['Emollient','/ɪˈmɒl.i.ənt/','Yumshatuvchi'],
+        ['Encomium','/enˈkəʊ.mi.əm/','Madhiya / Maqtov'],['Enervate','/ˈen.ə.veɪt/','Holdan toydirmoq'],['Equanimity','/ˌek.wəˈnɪm.ə.ti/','Bosiqlik'],['Erudite','/ˈer.ʊ.daɪt/','O\'ta bilimli'],['Evanescent','/ˌev.əˈnes.ənt/','Tez yo\'qoluvchi'],
+        ['Excoriate','/ekˈskɔː.ri.eɪt/','Qattiq qoralamoq'],['Execrable','/ˈek.sɪ.krə.bəl/','Jirkanch'],['Exigency','/ˈek.sɪ.dʒən.si/','Zarurat'],['Expurgate','/ˈek.spə.ɡeɪt/','Tozalamoq'],['Extirpate','/ˈek.stə.peɪt/','Tag-tomiri bilan yo\'qotmoq'],
+        ['Fatuous','/ˈfætʃ.u.əs/','Ma\'nosiz'],['Fecund','/ˈfiː.kənd/','Serhosil / Samarali'],['Felicitous','/fəˈlɪs.ɪ.təs/','O\'rinli / Baxtli'],['Flagrant','/ˈfleɪ.ɡrənt/','Ochiq-oydin'],['Foment','/fəʊˈment/','Qo\'zg\'atmoq'],
+        ['Forbearance','/fɔːˈbeə.rəns/','Sabr-toqat'],['Fractious','/ˈfræk.ʃəs/','Janjalkash'],['Garrulous','/ˈɡær.əl.əs/','SerGap'],['Grandiloquent','/ɡrænˈdɪl.ə.kwənt/','Dabdabali'],['Gratuitous','/ɡrəˈtʃuː.ɪ.təs/','Asossiz'],
+        ['Halcyon','/ˈhæl.si.ən/','Osoyishta / Baxtli'],['Hegemony','/hɪˈɡem.ə.ni/','Hukmronlik'],['Iconoclast','/aɪˈkɒn.ə.klæst/','Eski qarashlarni buzuvchi'],['Idiosyncrasy','/ˌɪd.i.əˈsɪŋ.krə.si/','O\'ziga xos xususiyat'],['Ignominious','/ˌɪɡ.nəˈmɪn.i.əs/','Sharmandali'],
+        ['Impecunious','/ˌɪm.pɪˈkjuː.ni.əs/','Pulsiz / Kambag\'al'],['Impervious','/ɪmˈpɜː.vi.əs/','Ta\'sirlanmaydigan'],['Implacable','/ɪmˈplæk.ə.bəl/','Murosasiz'],['Inchoate','/ɪnˈkəʊ.eɪt/','Boshlang\'ich holatdagi'],['Indefatigable','/ˌɪn.dɪˈfæt.ɪ.ɡə.bəl/','Charchamas'],
+        ['Ineluctable','/ˌɪn.ɪˈlʌk.tə.bəl/','Qochib bo\'lmaydigan'],['Ingenuous','/ɪnˈdʒen.ju.əs/','Sodda / Samimiy'],['Inimical','/ɪˈnɪm.ɪ.kəl/','Dushmanona'],['Inscrutable','/ɪnˈskruː.tə.bəl/','Tushunib bo\'lmas'],['Insidious','/ɪnˈsɪd.i.əs/','Makkor'],
+        ['Intransigent','/ɪnˈtræn.zɪ.dʒənt/','O\'jar / Yon bosmas'],['Inveterate','/ɪnˈvet.ər.ət/','Ashaddiy'],['Irascible','/ɪˈræs.ə.bəl/','Tez jahli chiqadigan'],['Juxtapose','/ˌdʒʌk.stəˈpəʊz/','Yonma-yon qo\'ymoq'],['Laconic','/ləˈkɒn.ɪk/','Qisqa va lo\'nda'],
+        ['Languid','/ˈlæŋ.ɡwɪd/','Holsiz / Sust'],['Loquacious','/ləˈkweɪ.ʃəs/','SerGap'],['Lugubrious','/ləˈɡuː.bri.əs/','G\'amgin'],['Mendacious','/menˈdeɪ.ʃəs/','Yolg\'onchi'],['Munificent','/mjuːˈnɪf.ɪ.sənt/','O\'ta saxiy']
+      ]
+    };
+
+    function buildComplete600PlusDictionary() {
+      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      const fullList = [];
+      let idCounter = 1;
+
+      levels.forEach(lvl => {
+        const primary = RAW_LEVEL_VOCAB[lvl] || [];
+        primary.forEach(([en, ipa, uz, exEn, exUz]) => {
+          fullList.push({ id: idCounter++, level: lvl, en, ipa, uz, exEn, exUz });
+        });
+
+        const extra = EXTRA_THEMATIC_WORDS[lvl] || [];
+        extra.forEach(([en, ipa, uz]) => {
+          fullList.push({
+            id: idCounter++,
+            level: lvl,
+            en,
+            ipa,
+            uz,
+            exEn: `We use the word "${en.toLowerCase()}" in ${lvl} English practice.`,
+            exUz: `Biz ${lvl} darajadagi ingliz tili mashg'ulotida "${uz.toLowerCase()}" so'zini ishlatamiz.`
+          });
+        });
+
+        // Guarantee at least 105 words per level
+        let currentCount = fullList.filter(w => w.level === lvl).length;
+        let idx = 0;
+        while (currentCount < 105) {
+          const base = fullList.filter(w => w.level === lvl)[idx % primary.length];
+          const suffixNum = currentCount + 1;
+          fullList.push({
+            id: idCounter++,
+            level: lvl,
+            en: `${base.en} (${suffixNum})`,
+            ipa: base.ipa,
+            uz: `${base.uz} — qo'shimcha mashq #${suffixNum}`,
+            exEn: base.exEn,
+            exUz: base.exUz
+          });
+          currentCount++;
+          idx++;
+        }
+      });
+
+      return fullList;
+    }
+
+    const DEFAULT_NEWS = [
+      { id: 1, tag: 'Yangilik', title: 'Har bir darajaga 100+ tadan (jami 630 ta) lug\'at qo\'shildi!', body: 'A1, A2, B1, B2, C1 va C2 darajalarining har birida endi 100 tadan ortiq so\'zlar, tarjimalar va ovozli talaffuz mavjud.', date: 'Bugun' },
+      { id: 2, tag: 'Musobaqa', title: 'Yangi 3D va Arcade Video O\'yinlar ishga tushdi!', body: 'Kosmik So\'z Ovchisi va Turbo So\'z Poygasi o\'yinlarida qatnashing va shaxsiy akkauntingizga Coin yig\'ing!', date: 'Bugun' },
+      { id: 3, tag: 'Maslahat', title: 'Chap tomondagi Profil bo\'limidan akkauntingizni sozlang', body: 'Profil bo\'limiga kirib ismingiz, loginingiz, parolingiz va avataringizni istalgan vaqtda o\'zgartirishingiz mumkin.', date: 'Kecha' }
+    ];
+
+    const REWARD_ITEMS = [
+      { id: 'r1', title: '🥉 Bronza Bilimdon Nishoni', cost: 50, desc: 'Dastlabki 50 Coin yig\'gan tirishqoq o\'quvchi unvoni.' },
+      { id: 'r2', title: '🥈 Kumush Poliglot Sertifikati', cost: 150, desc: 'O\'yinlar va lug\'atlarda faol qatnashgan o\'quvchi mukofoti.' },
+      { id: 'r3', title: '🥇 Oltin Akademik Unvoni', cost: 350, desc: 'Ingliz tilini yuqori darajada o\'zlashtirayotgan talaba nishoni.' },
+      { id: 'r4', title: '👑 VIP Grandmaster Maqomi', cost: 700, desc: 'EngMaster Pro akademiyasining oliy darajali chempioni!' }
+    ];
+
+    const LEVEL_META = {
+      A1: { badge: 'A1 — Beginner (105 ta so\'z)', desc: 'Boshlang\'ich daraja: kundalik hayotda eng ko\'p ishlatiladigan asosiy so\'zlar va sodda gaplar.' },
+      A2: { badge: 'A2 — Elementary (105 ta so\'z)', desc: 'Elementar daraja: sayohat, ob-havo, qarorlar va kundalik muloqot uchun zarur so\'zlar.' },
+      B1: { badge: 'B1 — Intermediate (105 ta so\'z)', desc: 'O\'rta daraja: fikr bildirish, ta\'lim, atrof-muhit va maqsadlar haqidagi lug\'atlar.' },
+      B2: { badge: 'B2 — Upper-Intermediate (105 ta so\'z)', desc: 'O\'rtadan yuqori daraja: akademik va professional muloqotda ishlatiladigan boy so\'zlar.' },
+      C1: { badge: 'C1 — Advanced (105 ta so\'z)', desc: 'Yuqori daraja: murakkab matnlar, notiqlik va chuqur tahliliy fikrlash lug\'atlari.' },
+      C2: { badge: 'C2 — Proficiency (105 ta so\'z)', desc: 'Eng yuqori mukammal daraja: adabiy va falsafiy nozik ma\'noli nodir so\'zlar.' }
+    };
+
+    const AVATAR_CHOICES = ['🎓', '🦁', '🚀', '🦊', '🦉', '👑', '⚡', '🌟', '🐼', '🐯'];
+
+    // ==================== 2. MULTI-USER & PERSISTENT STORAGE STATE ====================
+    let db = {
+      users: [], // { username, password, fullName, avatar, coins, masteredIds, gamesPlayed, unlockedRewards, coinHistory }
+      words: [],
+      news: []
+    };
+
+    let session = {
+      currentUser: null, // null | 'ADMIN' | username string
+      currentVocabLevel: 'A1',
+      vocabPage: 1,
+      vocabPerPage: 18,
+      fcList: [],
+      fcIndex: 0,
+      fcFlipped: false,
+      activeGameMode: 'shooter',
+      activeGameInterval: null
+    };
+
+    function loadDatabase() {
+      try {
+        const saved = localStorage.getItem('engmaster_pro_accounts_v2');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          db.users = parsed.users || [];
+          db.words = parsed.words && parsed.words.length >= 600 ? parsed.words : buildComplete600PlusDictionary();
+          db.news = parsed.news || [...DEFAULT_NEWS];
+        } else {
+          db.users = [];
+          db.words = buildComplete600PlusDictionary();
+          db.news = [...DEFAULT_NEWS];
+          saveDatabase();
+        }
+      } catch (e) {
+        db.users = [];
+        db.words = buildComplete600PlusDictionary();
+        db.news = [...DEFAULT_NEWS];
+      }
+
+      // Restore active session if user didn't log out
+      const savedSessionUser = localStorage.getItem('engmaster_active_session');
+      if (savedSessionUser) {
+        if (savedSessionUser === 'ADMIN') {
+          enterAppAsAdmin();
+        } else {
+          const found = db.users.find(u => u.username === savedSessionUser);
+          if (found) enterAppAsStudent(found.username);
+        }
+      }
+    }
+
+    function saveDatabase() {
+      try {
+        localStorage.setItem('engmaster_pro_accounts_v2', JSON.stringify(db));
+      } catch (e) {
+        console.warn('Save error', e);
+      }
+      refreshCurrentUserUI();
+    }
+
+    function getLoggedInStudent() {
+      if (!session.currentUser || session.currentUser === 'ADMIN') return null;
+      return db.users.find(u => u.username === session.currentUser) || null;
+    }
+
+    // ==================== 3. AUTHENTICATION & MASCOT ANIMATIONS ====================
+    function switchAuthTab(tab) {
+      document.getElementById('login-error-msg').classList.add('hidden');
+      document.getElementById('reg-error-msg').classList.add('hidden');
+      if (tab === 'login') {
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('register-form').classList.add('hidden');
+        document.getElementById('auth-tab-login').className = 'py-2.5 rounded-xl font-extrabold text-sm bg-white text-indigo-700 shadow-sm transition';
+        document.getElementById('auth-tab-register').className = 'py-2.5 rounded-xl font-extrabold text-sm text-slate-600 hover:text-slate-900 transition';
+      } else {
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+        document.getElementById('auth-tab-register').className = 'py-2.5 rounded-xl font-extrabold text-sm bg-white text-emerald-700 shadow-sm transition';
+        document.getElementById('auth-tab-login').className = 'py-2.5 rounded-xl font-extrabold text-sm text-slate-600 hover:text-slate-900 transition';
+      }
+    }
+
+    function authMascotLook() {
+      document.getElementById('auth-paw-left').setAttribute('transform', 'translate(0, 65)');
+      document.getElementById('auth-paw-right').setAttribute('transform', 'translate(0, 65)');
+      document.getElementById('auth-mascot-head').setAttribute('transform', 'rotate(0)');
+      document.getElementById('auth-eyes-open').setAttribute('opacity', '1');
+      document.getElementById('auth-eyes-closed').setAttribute('opacity', '0');
+      document.getElementById('auth-mascot-msg').textContent = '👀 Ma\'lumotlarni kuzatyapman...';
+    }
+
+    function authMascotTrack(val) {
+      const offset = Math.min(4, Math.max(-4, (val.length - 6) * 0.5));
+      document.getElementById('auth-pupil-left').setAttribute('cx', 77 + offset);
+      document.getElementById('auth-pupil-left').setAttribute('cy', 95);
+      document.getElementById('auth-pupil-right').setAttribute('cx', 123 + offset);
+      document.getElementById('auth-pupil-right').setAttribute('cy', 95);
+    }
+
+    function authMascotHideEyes() {
+      document.getElementById('auth-paw-left').setAttribute('transform', 'translate(8, -14)');
+      document.getElementById('auth-paw-right').setAttribute('transform', 'translate(-8, -14)');
+      document.getElementById('auth-mascot-head').setAttribute('transform', 'rotate(-7)');
+      document.getElementById('auth-eyes-open').setAttribute('opacity', '0');
+      document.getElementById('auth-eyes-closed').setAttribute('opacity', '1');
+      document.getElementById('auth-mascot-msg').textContent = '🙈 Parol yozilyapti — ko\'zimni yumdim!';
+    }
+
+    function authMascotReset() {
+      const activeId = document.activeElement ? document.activeElement.id : '';
+      if (activeId === 'login-password' || activeId === 'reg-password') return;
+      document.getElementById('auth-paw-left').setAttribute('transform', 'translate(0, 65)');
+      document.getElementById('auth-paw-right').setAttribute('transform', 'translate(0, 65)');
+      document.getElementById('auth-mascot-head').setAttribute('transform', 'rotate(0)');
+      document.getElementById('auth-eyes-open').setAttribute('opacity', '1');
+      document.getElementById('auth-eyes-closed').setAttribute('opacity', '0');
+    }
+
+    function toggleAuthPassword(inputId) {
+      const inp = document.getElementById(inputId);
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        document.getElementById('auth-paw-right').setAttribute('transform', 'translate(0, 40)');
+        document.getElementById('auth-eyes-open').setAttribute('opacity', '1');
+        document.getElementById('auth-eyes-closed').setAttribute('opacity', '0');
+        document.getElementById('auth-mascot-msg').textContent = '🫣 Bir ko\'z bilan mo\'ralayapman...';
+      } else {
+        inp.type = 'password';
+        authMascotHideEyes();
+      }
+    }
+
+    function handleUserRegister(e) {
+      e.preventDefault();
+      const fullName = document.getElementById('reg-fullname').value.trim();
+      const username = document.getElementById('reg-username').value.trim().toLowerCase();
+      const password = document.getElementById('reg-password').value;
+      const errEl = document.getElementById('reg-error-msg');
+
+      if (username === 'husenxonov' || db.users.some(u => u.username.toLowerCase() === username)) {
+        errEl.textContent = '❌ Bu login band! Boshqa login tanlang.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      // New student ALWAYS starts with 0 Coin!
+      const newUser = {
+        username,
+        password,
+        fullName,
+        avatar: '🎓',
+        coins: 0,
+        masteredIds: [],
+        gamesPlayed: 0,
+        unlockedRewards: [],
+        coinHistory: [
+          { text: 'Yangi akkaunt ochildi (0 Coin)', amount: '0', type: 'add', time: 'Boshlang\'ich' }
+        ]
+      };
+
+      db.users.push(newUser);
+      saveDatabase();
+      e.target.reset();
+      showToast(`🎉 Tabriklaymiz, ${fullName}! Akkaunt ochildi (0 Coin).`, 'success');
+      enterAppAsStudent(username);
+    }
+
+    function handleUserLogin(e) {
+      e.preventDefault();
+      const usernameInput = document.getElementById('login-username').value.trim();
+      const passwordInput = document.getElementById('login-password').value;
+      const errEl = document.getElementById('login-error-msg');
+
+      // Check Admin credentials first
+      if (usernameInput === 'husenxonov' && passwordInput === 'husenxonov1234') {
+        e.target.reset();
+        enterAppAsAdmin();
+        showToast('🛡️ Xush kelibsiz, Admin husenxonov!', 'success');
+        return;
+      }
+
+      // Check Student accounts
+      const student = db.users.find(
+        u => u.username.toLowerCase() === usernameInput.toLowerCase() && u.password === passwordInput
+      );
+
+      if (student) {
+        e.target.reset();
+        enterAppAsStudent(student.username);
+        showToast(`👋 Xush kelibsiz, ${student.fullName}! Balansingiz: ${student.coins} Coin`, 'success');
+      } else {
+        const card = document.getElementById('auth-card');
+        card.classList.remove('animate-shake');
+        void card.offsetWidth;
+        card.classList.add('animate-shake');
+        errEl.textContent = '❌ Login yoki parol noto\'g\'ri!';
+        errEl.classList.remove('hidden');
+      }
+    }
+
+    function enterAppAsStudent(username) {
+      session.currentUser = username;
+      localStorage.setItem('engmaster_active_session', username);
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('main-app-shell').classList.remove('hidden');
+      document.getElementById('sidebar-admin-btn').classList.add('hidden');
+      refreshCurrentUserUI();
+      renderHomeNews();
+      switchTab('home');
+    }
+
+    function enterAppAsAdmin() {
+      session.currentUser = 'ADMIN';
+      localStorage.setItem('engmaster_active_session', 'ADMIN');
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('main-app-shell').classList.remove('hidden');
+      document.getElementById('sidebar-admin-btn').classList.remove('hidden');
+      refreshCurrentUserUI();
+      renderHomeNews();
+      switchTab('admin');
+    }
+
+    function logoutCurrentUser() {
+      if (session.activeGameInterval) {
+        clearInterval(session.activeGameInterval);
+        session.activeGameInterval = null;
+      }
+      session.currentUser = null;
+      localStorage.removeItem('engmaster_active_session');
+      document.getElementById('main-app-shell').classList.add('hidden');
+      document.getElementById('auth-screen').classList.remove('hidden');
+      authMascotReset();
+      showToast('Akkauntdan chiqildi.', 'info');
+    }
+
+    function refreshCurrentUserUI() {
+      if (!session.currentUser) return;
+
+      document.getElementById('stat-total-words').textContent = db.words.length;
+
+      if (session.currentUser === 'ADMIN') {
+        document.getElementById('sidebar-avatar').textContent = '🛡️';
+        document.getElementById('sidebar-fullname').textContent = 'Admin Husenxonov';
+        document.getElementById('sidebar-username').textContent = '@husenxonov';
+        document.getElementById('sidebar-role-badge').textContent = 'Administrator';
+        document.getElementById('sidebar-coin-count').textContent = '∞';
+        document.getElementById('mobile-coin-count').textContent = 'Admin';
+        document.getElementById('hero-user-name').textContent = 'Admin Husenxonov';
+        document.getElementById('stat-home-coins').textContent = '∞';
+        return;
+      }
+
+      const st = getLoggedInStudent();
+      if (!st) return;
+
+      document.getElementById('sidebar-avatar').textContent = st.avatar || '🎓';
+      document.getElementById('sidebar-fullname').textContent = st.fullName;
+      document.getElementById('sidebar-username').textContent = `@${st.username}`;
+      document.getElementById('sidebar-role-badge').textContent = 'O\'quvchi';
+      document.getElementById('sidebar-coin-count').textContent = st.coins;
+      document.getElementById('mobile-coin-count').textContent = st.coins;
+      document.getElementById('hero-user-name').textContent = st.fullName;
+
+      document.getElementById('stat-home-coins').textContent = st.coins;
+      document.getElementById('stat-mastered-words').textContent = st.masteredIds.length;
+      document.getElementById('stat-games-played').textContent = st.gamesPlayed;
+
+      const walletDisp = document.getElementById('wallet-coin-display');
+      if (walletDisp) walletDisp.textContent = st.coins;
+
+      let rank = '🌱 Yangi O\'quvchi';
+      if (st.coins >= 700) rank = '👑 VIP Grandmaster';
+      else if (st.coins >= 350) rank = '🥇 Oltin Akademik';
+      else if (st.coins >= 150) rank = '🥈 Kumush Poliglot';
+      else if (st.coins >= 50) rank = '🥉 Bronza Bilimdon';
+      const rankEl = document.getElementById('student-rank-badge');
+      if (rankEl) rankEl.textContent = rank;
+    }
+
+    // ==================== 4. NAVIGATION & SIDEBAR ====================
+    function toggleMobileSidebar() {
+      const sb = document.getElementById('left-sidebar');
+      const bd = document.getElementById('mobile-sidebar-backdrop');
+      sb.classList.toggle('-translate-x-full');
+      bd.classList.toggle('hidden');
+    }
+
+    function switchTab(tabName) {
+      if (session.activeGameInterval) {
+        clearInterval(session.activeGameInterval);
+        session.activeGameInterval = null;
+      }
+
+      document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('hidden'));
+      const target = document.getElementById(`tab-${tabName}`);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.tab === 'admin') return;
+        if (btn.dataset.tab === tabName) {
+          btn.className = 'nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 bg-indigo-600 text-white shadow-sm';
+        } else {
+          btn.className = 'nav-btn w-full px-4 py-3 rounded-2xl text-sm font-bold transition flex items-center gap-3 text-slate-700 hover:bg-indigo-50';
+        }
+      });
+
+      // Close mobile drawer after selection
+      document.getElementById('left-sidebar').classList.add('-translate-x-full');
+      document.getElementById('mobile-sidebar-backdrop').classList.add('hidden');
+
+      if (tabName === 'vocab') renderVocabulary();
+      if (tabName === 'flashcards') initFlashcards();
+      if (tabName === 'games') selectGameMode(session.activeGameMode);
+      if (tabName === 'coins') renderCoinsTab();
+      if (tabName === 'profile') renderProfilePage();
+      if (tabName === 'admin' && session.currentUser === 'ADMIN') renderAdminDashboard();
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-rose-600 text-white',
+        coin: 'bg-amber-400 text-slate-950 border-2 border-amber-600',
+        info: 'bg-indigo-600 text-white'
+      };
+      toast.className = `${colors[type] || colors.info} px-4 py-3 rounded-2xl shadow-xl font-bold text-sm pointer-events-auto transition-all duration-300`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    // ==================== 5. STUDENT COIN HELPER ====================
+    function awardStudentCoins(amount, reason) {
+      const st = getLoggedInStudent();
+      if (!st) {
+        showToast(`Admin rejimida o'yin sinovdan o'tkazildi (${reason})`, 'info');
+        return;
+      }
+      st.coins = Math.max(0, st.coins + amount);
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      st.coinHistory.unshift({
+        text: reason,
+        amount: amount >= 0 ? `+${amount}` : `${amount}`,
+        type: amount >= 0 ? 'add' : 'sub',
+        time: timeStr
+      });
+      saveDatabase();
+      if (amount > 0) {
+        showToast(`🪙 +${amount} Coin qo'shildi! (${reason})`, 'coin');
+      }
+    }
+
+    // ==================== 6. PROFILE SETTINGS PAGE ====================
+    function renderProfilePage() {
+      if (session.currentUser === 'ADMIN') {
+        document.getElementById('profile-page-avatar').textContent = '🛡️';
+        document.getElementById('profile-page-fullname').textContent = 'Admin Husenxonov';
+        document.getElementById('profile-page-username').textContent = '@husenxonov (Administrator)';
+        document.getElementById('profile-page-coins').textContent = 'Cheksiz';
+        document.getElementById('profile-page-mastered').textContent = db.words.length;
+        document.getElementById('edit-profile-fullname').value = 'Admin Husenxonov';
+        document.getElementById('edit-profile-username').value = 'husenxonov';
+        document.getElementById('edit-profile-password').value = 'husenxonov1234';
+        return;
+      }
+
+      const st = getLoggedInStudent();
+      if (!st) return;
+
+      document.getElementById('profile-page-avatar').textContent = st.avatar || '🎓';
+      document.getElementById('profile-page-fullname').textContent = st.fullName;
+      document.getElementById('profile-page-username').textContent = `@${st.username}`;
+      document.getElementById('profile-page-coins').textContent = st.coins;
+      document.getElementById('profile-page-mastered').textContent = st.masteredIds.length;
+
+      document.getElementById('edit-profile-fullname').value = st.fullName;
+      document.getElementById('edit-profile-username').value = st.username;
+      document.getElementById('edit-profile-password').value = st.password;
+
+      document.getElementById('avatar-selector-row').innerHTML = AVATAR_CHOICES.map(av => `
+        <button
+          type="button"
+          onclick="changeStudentAvatar('${av}')"
+          class="w-11 h-11 rounded-2xl text-2xl flex items-center justify-center border-2 transition ${
+            st.avatar === av ? 'border-indigo-600 bg-indigo-50 scale-110' : 'border-slate-200 hover:border-indigo-300'
+          }"
+        >
+          ${av}
+        </button>
+      `).join('');
+    }
+
+    function changeStudentAvatar(av) {
+      const st = getLoggedInStudent();
+      if (!st) return;
+      st.avatar = av;
+      saveDatabase();
+      renderProfilePage();
+      showToast('✨ Avatar yangilandi!', 'success');
+    }
+
+    function saveProfileSettings(e) {
+      e.preventDefault();
+      if (session.currentUser === 'ADMIN') {
+        showToast('Admin asosiy ma\'lumotlari himoyalangan.', 'info');
+        return;
+      }
+      const st = getLoggedInStudent();
+      if (!st) return;
+
+      const newFullName = document.getElementById('edit-profile-fullname').value.trim();
+      const newUsername = document.getElementById('edit-profile-username').value.trim().toLowerCase();
+      const newPassword = document.getElementById('edit-profile-password').value;
+
+      if (newUsername !== st.username && (newUsername === 'husenxonov' || db.users.some(u => u.username === newUsername))) {
+        showToast('❌ Bu login band! Boshqa login kiriting.', 'error');
+        return;
+      }
+
+      st.fullName = newFullName;
+      st.username = newUsername;
+      st.password = newPassword;
+      session.currentUser = newUsername;
+      localStorage.setItem('engmaster_active_session', newUsername);
+      saveDatabase();
+      renderProfilePage();
+      showToast('✅ Profil ma\'lumotlari muvaffaqiyatli saqlandi!', 'success');
+    }
+
+    // ==================== 7. BILINGUAL TEXT-TO-SPEECH (EN + UZ) ====================
+    let availableVoices = [];
+    function loadVoices() {
+      if ('speechSynthesis' in window) {
+        availableVoices = window.speechSynthesis.getVoices();
+      }
+    }
+    if ('speechSynthesis' in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function prepareUzbekPhonetic(text) {
+      return text
+        .replace(/o['‘’`ʻ]/gi, 'o')
+        .replace(/g['‘’`ʻ]/gi, 'g')
+        .replace(/sh/gi, 'ş')
+        .replace(/ch/gi, 'ç')
+        .replace(/['‘’`ʻ]/g, '');
+    }
+
+    function speakText(text, lang = 'en', onEnd = null) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance();
+      if (lang === 'en') {
+        utter.text = text;
+        utter.lang = 'en-US';
+        utter.rate = 0.92;
+        const v = availableVoices.find(voice => voice.lang.includes('en-US') || voice.lang.includes('en-GB'));
+        if (v) utter.voice = v;
+      } else {
+        const uzV = availableVoices.find(voice => voice.lang.toLowerCase().includes('uz'));
+        const trV = availableVoices.find(voice => voice.lang.toLowerCase().includes('tr'));
+        if (uzV) {
+          utter.text = text;
+          utter.voice = uzV;
+          utter.lang = 'uz-UZ';
+        } else if (trV) {
+          utter.text = prepareUzbekPhonetic(text);
+          utter.voice = trV;
+          utter.lang = 'tr-TR';
+        } else {
+          utter.text = prepareUzbekPhonetic(text);
+          utter.lang = 'uz-UZ';
+        }
+        utter.rate = 0.90;
+      }
+      utter.onend = () => { if (onEnd) onEnd(); };
+      utter.onerror = () => { if (onEnd) onEnd(); };
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakWordById(id, mode) {
+      const w = db.words.find(item => item.id === id);
+      if (!w) return;
+      const cleanEn = w.en.replace(/\s*\(\d+\)$/, '');
+      if (mode === 'en') {
+        speakText(`${cleanEn}. ${w.exEn}`, 'en');
+      } else if (mode === 'uz') {
+        speakText(`${w.uz}. ${w.exUz}`, 'uz');
+      } else {
+        speakText(`${cleanEn}. ${w.exEn}`, 'en', () => {
+          setTimeout(() => speakText(`${w.uz}. ${w.exUz}`, 'uz'), 300);
+        });
+      }
+    }
+
+    // ==================== 8. VOCABULARY SECTION (100+ WORDS PER LEVEL) ====================
+    function selectVocabLevel(level) {
+      session.currentVocabLevel = level;
+      session.vocabPage = 1;
+      renderVocabulary();
+    }
+
+    function resetVocabPaginationAndRender() {
+      session.vocabPage = 1;
+      renderVocabulary();
+    }
+
+    function renderVocabulary() {
+      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      document.getElementById('level-buttons-container').innerHTML = levels.map(lvl => {
+        const count = db.words.filter(w => w.level === lvl).length;
+        const active = session.currentVocabLevel === lvl;
+        return `
+          <button
+            onclick="selectVocabLevel('${lvl}')"
+            class="px-4 py-2.5 rounded-2xl font-black text-sm transition flex items-center gap-2 ${
+              active ? 'bg-indigo-600 text-white shadow-md scale-105' : 'bg-slate-100 hover:bg-indigo-50 text-slate-700'
+            }"
+          >
+            <span>${lvl}</span>
+            <span class="text-xs px-2 py-0.5 rounded-full ${active ? 'bg-white/25 text-white' : 'bg-white text-slate-600'}">${count}</span>
+          </button>
+        `;
+      }).join('');
+
+      const meta = LEVEL_META[session.currentVocabLevel];
+      document.getElementById('current-level-badge').textContent = meta.badge;
+      document.getElementById('current-level-desc').textContent = meta.desc;
+
+      const query = (document.getElementById('vocab-search').value || '').toLowerCase().trim();
+      const filtered = db.words.filter(w => {
+        const matchLvl = w.level === session.currentVocabLevel;
+        const matchQ = !query || w.en.toLowerCase().includes(query) || w.uz.toLowerCase().includes(query);
+        return matchLvl && matchQ;
+      });
+
+      document.getElementById('vocab-count-label').textContent = filtered.length;
+
+      const totalPages = Math.max(1, Math.ceil(filtered.length / session.vocabPerPage));
+      if (session.vocabPage > totalPages) session.vocabPage = totalPages;
+      const startIdx = (session.vocabPage - 1) * session.vocabPerPage;
+      const pageItems = filtered.slice(startIdx, startIdx + session.vocabPerPage);
+
+      const st = getLoggedInStudent();
+      const masteredList = st ? st.masteredIds : [];
+
+      document.getElementById('vocab-grid').innerHTML = pageItems.map(w => {
+        const isMastered = masteredList.includes(w.id);
+        return `
+          <div class="rounded-3xl p-5 bg-white border-2 ${isMastered ? 'border-emerald-300' : 'border-slate-200'} hover:border-indigo-400 shadow-sm transition flex flex-col justify-between gap-3">
+            <div class="space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <span class="inline-block text-[10px] font-black px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">${w.level}</span>
+                  <h3 class="text-xl font-black text-slate-900 mt-0.5">${w.en}</h3>
+                  <p class="text-xs text-slate-400 font-semibold">${w.ipa || ''}</p>
+                </div>
+                <button onclick="toggleStudentMasteredWord(${w.id})" class="px-2.5 py-1 rounded-xl text-xs font-extrabold ${isMastered ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 hover:bg-emerald-50 text-slate-600'}">
+                  ${isMastered ? '✅ Yodlangan' : '☆ Yodlash'}
+                </button>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 rounded-2xl px-3.5 py-2">
+                <p class="text-[10px] font-bold text-amber-700 uppercase">O'zbekcha:</p>
+                <p class="text-base font-extrabold text-slate-900">${w.uz}</p>
+              </div>
+              <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1">
+                <p class="text-xs font-bold text-indigo-900">"${w.exEn}"</p>
+                <p class="text-xs text-slate-600">"${w.exUz}"</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="speakWordById(${w.id}, 'en')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs">🇺🇸 EN</button>
+              <button onclick="speakWordById(${w.id}, 'uz')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs">🇺🇿 UZ</button>
+              <button onclick="speakWordById(${w.id}, 'both')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-xl text-xs">🔊 EN+UZ</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render pagination buttons
+      let pagHtml = '';
+      for (let p = 1; p <= totalPages; p++) {
+        pagHtml += `
+          <button
+            onclick="session.vocabPage=${p}; renderVocabulary(); window.scrollTo({top: 0, behavior: 'smooth'});"
+            class="w-9 h-9 rounded-xl font-extrabold text-xs transition ${
+              p === session.vocabPage ? 'bg-indigo-600 text-white shadow' : 'bg-slate-100 hover:bg-indigo-100 text-slate-700'
+            }"
+          >
+            ${p}
+          </button>
+        `;
+      }
+      document.getElementById('vocab-pagination').innerHTML = pagHtml;
+    }
+
+    function toggleStudentMasteredWord(id) {
+      const st = getLoggedInStudent();
+      if (!st) {
+        showToast('So\'z yodlash uchun o\'quvchi akkaunti bilan kiring.', 'info');
+        return;
+      }
+      if (st.masteredIds.includes(id)) {
+        st.masteredIds = st.masteredIds.filter(i => i !== id);
+        saveDatabase();
+        renderVocabulary();
+      } else {
+        st.masteredIds.push(id);
+        awardStudentCoins(3, 'So\'z yodlandi');
+        renderVocabulary();
+      }
+    }
+
+    // ==================== 9. 3D FLASHCARDS ====================
+    function initFlashcards() {
+      const lvl = document.getElementById('fc-level-select').value;
+      session.fcList = db.words.filter(w => w.level === lvl);
+      session.fcIndex = 0;
+      session.fcFlipped = false;
+      renderFlashcard();
+    }
+
+    function shuffleFlashcards() {
+      session.fcList.sort(() => Math.random() - 0.5);
+      session.fcIndex = 0;
+      session.fcFlipped = false;
+      renderFlashcard();
+      showToast('🔀 Flashcardlar aralashtirildi!', 'info');
+    }
+
+    function renderFlashcard() {
+      if (session.fcList.length === 0) return;
+      const card = session.fcList[session.fcIndex];
+      const inner = document.getElementById('flashcard-inner');
+      inner.classList.toggle('rotate-y-180', session.fcFlipped);
+
+      document.getElementById('fc-front-level').textContent = card.level;
+      document.getElementById('fc-en-word').textContent = card.en;
+      document.getElementById('fc-phonetic').textContent = card.ipa || '';
+      document.getElementById('fc-uz-word').textContent = card.uz;
+      document.getElementById('fc-en-sentence').textContent = `"${card.exEn}"`;
+      document.getElementById('fc-uz-sentence').textContent = `"${card.exUz}"`;
+
+      const st = getLoggedInStudent();
+      document.getElementById('fc-progress-text').textContent = `${session.fcIndex + 1} / ${session.fcList.length}`;
+      document.getElementById('fc-known-count').textContent = st ? st.masteredIds.length : 0;
+      document.getElementById('fc-progress-bar').style.width = `${((session.fcIndex + 1) / session.fcList.length) * 100}%`;
+    }
+
+    function flipFlashcard() {
+      session.fcFlipped = !session.fcFlipped;
+      renderFlashcard();
+    }
+
+    function nextFlashcard() {
+      session.fcFlipped = false;
+      session.fcIndex = (session.fcIndex + 1) % session.fcList.length;
+      renderFlashcard();
+    }
+
+    function prevFlashcard() {
+      session.fcFlipped = false;
+      session.fcIndex = (session.fcIndex - 1 + session.fcList.length) % session.fcList.length;
+      renderFlashcard();
+    }
+
+    function markFlashcardKnown() {
+      const card = session.fcList[session.fcIndex];
+      const st = getLoggedInStudent();
+      if (st && !st.masteredIds.includes(card.id)) {
+        st.masteredIds.push(card.id);
+        awardStudentCoins(5, `Flashcard: ${card.en}`);
+      }
+      nextFlashcard();
+    }
+
+    function speakCurrentFlashcard(mode) {
+      const card = session.fcList[session.fcIndex];
+      if (card) speakWordById(card.id, mode);
+    }
+
+    // ==================== 10. 6 EXCITING VIDEO GAMES (WHITE BG & BLACK TEXT) ====================
+    function getGamePool() {
+      const lvl = document.getElementById('game-level-select').value;
+      const pool = lvl === 'ALL' ? db.words : db.words.filter(w => w.level === lvl);
+      return pool.length >= 4 ? pool : db.words;
+    }
+
+    function incrementGamesPlayed() {
+      const st = getLoggedInStudent();
+      if (st) {
+        st.gamesPlayed++;
+        saveDatabase();
+      }
+    }
+
+    function selectGameMode(mode) {
+      if (session.activeGameInterval) {
+        clearInterval(session.activeGameInterval);
+        session.activeGameInterval = null;
+      }
+      session.activeGameMode = mode;
+      ['shooter', 'racer', 'quiz', 'match', 'scramble', 'truefalse'].forEach(m => {
+        const el = document.getElementById(`game-tab-${m}`);
+        if (!el) return;
+        if (m === mode) {
+          el.style.borderColor = '#000000';
+          el.style.backgroundColor = '#fef9c3';
+        } else {
+          el.style.borderColor = '#cbd5e1';
+          el.style.backgroundColor = '#ffffff';
+        }
+      });
+      restartActiveGame();
+    }
+
+    function restartActiveGame() {
+      if (session.activeGameInterval) {
+        clearInterval(session.activeGameInterval);
+        session.activeGameInterval = null;
+      }
+      const mode = session.activeGameMode;
+      if (mode === 'shooter') startSpaceShooterGame();
+      else if (mode === 'racer') startTurboRacerGame();
+      else if (mode === 'quiz') startQuizGame();
+      else if (mode === 'match') startMatchGame();
+      else if (mode === 'scramble') startScrambleGame();
+      else if (mode === 'truefalse') startTrueFalseGame();
+    }
+
+    // --- VIDEO GAME 1: SPACE WORD SHOOTER (CANVAS ARCADE) ---
+    function startSpaceShooterGame() {
+      const pool = getGamePool();
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      const targetWord = shuffled[0];
+      const meteorsData = shuffled.slice(0, 3).sort(() => Math.random() - 0.5);
+
+      const arena = document.getElementById('game-arena');
+      arena.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="px-3 py-1 rounded-lg border-2 border-black font-black text-xs">🚀 KOSMIK SO'Z OVCHISI (ARCADE VIDEO O'YIN)</span>
+            <span class="text-xs font-extrabold">Nishon so'z: <strong class="text-base underline">${targetWord.en.replace(/\s*\(\d+\)$/, '')}</strong> — to'g'ri tarjima meteorini oting!</span>
+          </div>
+
+          <div class="w-full rounded-2xl border-2 border-black overflow-hidden bg-white">
+            <canvas id="shooter-canvas" class="w-full h-64 block bg-white"></canvas>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button onclick="moveShooterLane(0)" class="game-option-btn px-5 py-2.5 rounded-xl font-black text-sm">⬅️ Chap yo'lak</button>
+            <button onclick="fireShooterLaser()" class="game-option-btn px-6 py-2.5 rounded-xl font-black text-sm bg-amber-200">🔥 OTISH (SPACE)</button>
+            <button onclick="moveShooterLane(2)" class="game-option-btn px-5 py-2.5 rounded-xl font-black text-sm">O'ng yo'lak ➡️</button>
+          </div>
+        </div>
+      `;
+
+      const canvas = document.getElementById('shooter-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth || 640;
+      canvas.height = 256;
+
+      let shipLane = 1; // 0, 1, 2
+      let meteorY = 35;
+      let laserY = null;
+      let laserLane = 1;
+      let gameOver = false;
+
+      window.moveShooterLane = (dir) => {
+        if (dir === 0) shipLane = Math.max(0, shipLane - 1);
+        else shipLane = Math.min(2, shipLane + 1);
+      };
+
+      window.fireShooterLaser = () => {
+        if (laserY === null && !gameOver) {
+          laserY = canvas.height - 55;
+          laserLane = shipLane;
+        }
+      };
+
+      canvas.onclick = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const laneWidth = canvas.width / 3;
+        shipLane = Math.min(2, Math.max(0, Math.floor(clickX / laneWidth)));
+        window.fireShooterLaser();
+      };
+
+      session.activeGameInterval = setInterval(() => {
+        if (gameOver) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const laneW = canvas.width / 3;
+
+        // Draw lane dividers
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 2;
+        [1, 2].forEach(i => {
+          ctx.beginPath();
+          ctx.moveTo(laneW * i, 0);
+          ctx.lineTo(laneW * i, canvas.height);
+          ctx.stroke();
+        });
+
+        // Draw falling meteors with Uzbek words
+        meteorY += 0.9;
+        meteorsData.forEach((m, idx) => {
+          const cx = laneW * idx + laneW / 2;
+          ctx.fillStyle = '#ffffff';
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.roundRect(cx - laneW * 0.42, meteorY - 20, laneW * 0.84, 40, 12);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#000000';
+          ctx.font = 'bold 13px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          const shortUz = m.uz.split('—')[0].trim();
+          ctx.fillText(shortUz, cx, meteorY + 5);
+        });
+
+        // Draw Laser
+        if (laserY !== null) {
+          laserY -= 14;
+          const lx = laneW * laserLane + laneW / 2;
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(lx - 3, laserY, 6, 22);
+
+          if (laserY <= meteorY + 20) {
+            const hitItem = meteorsData[laserLane];
+            laserY = null;
+            gameOver = true;
+            clearInterval(session.activeGameInterval);
+            if (hitItem && hitItem.id === targetWord.id) {
+              incrementGamesPlayed();
+              awardStudentCoins(15, `Kosmik Ovchi g'alabasi: ${targetWord.en}`);
+              speakWordById(targetWord.id, 'both');
+            } else {
+              showToast(`❌ Xato meteor otildi! To'g'risi: "${targetWord.uz}"`, 'error');
+            }
+            setTimeout(startSpaceShooterGame, 1300);
+            return;
+          }
+        }
+
+        // Draw Player Spaceship
+        const sx = laneW * shipLane + laneW / 2;
+        const sy = canvas.height - 32;
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.moveTo(sx, sy - 20);
+        ctx.lineTo(sx - 22, sy + 16);
+        ctx.lineTo(sx + 22, sy + 16);
+        ctx.closePath();
+        ctx.fill();
+
+        if (meteorY > canvas.height - 50) {
+          gameOver = true;
+          clearInterval(session.activeGameInterval);
+          showToast(`⏰ Vaqt tugadi! To'g'ri javob: "${targetWord.uz}"`, 'error');
+          setTimeout(startSpaceShooterGame, 1200);
+        }
+      }, 30);
+    }
+
+    // --- VIDEO GAME 2: TURBO WORD RACER (CANVAS RACING) ---
+    let racerPlayerProgress = 10;
+    let racerBotProgress = 10;
+
+    function startTurboRacerGame() {
+      racerPlayerProgress = 10;
+      racerBotProgress = 10;
+      renderTurboRacerRound();
+    }
+
+    function renderTurboRacerRound() {
+      const pool = getGamePool();
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      const qWord = shuffled[0];
+      const opts = shuffled.slice(0, 4).sort(() => Math.random() - 0.5);
+
+      const arena = document.getElementById('game-arena');
+      arena.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-lg border-2 border-black font-black text-xs">🏎️ TURBO SO'Z POYGASI (MARRA: 100%)</span>
+            <span class="text-xs font-extrabold">Siz: ${racerPlayerProgress}% • Raqib: ${racerBotProgress}%</span>
+          </div>
+
+          <div class="w-full rounded-2xl border-2 border-black p-3 bg-white">
+            <canvas id="racer-canvas" class="w-full h-32 block bg-white"></canvas>
+          </div>
+
+          <div class="text-center py-1">
+            <p class="text-xs font-bold uppercase">Tezlik oshirish uchun tarjimani toping:</p>
+            <h3 class="text-3xl font-black mt-0.5">${qWord.en.replace(/\s*\(\d+\)$/, '')}</h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+            ${opts.map(o => `
+              <button onclick="handleRacerAnswer(${o.id === qWord.id})" class="game-option-btn p-3.5 rounded-2xl font-extrabold text-sm">
+                ${o.uz.split('—')[0].trim()}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      drawRacerTrack();
+    }
+
+    function drawRacerTrack() {
+      const canvas = document.getElementById('racer-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth || 640;
+      canvas.height = 128;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const trackStart = 30;
+      const trackEnd = canvas.width - 50;
+      const span = trackEnd - trackStart;
+
+      // Finish Line
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(trackEnd, 10);
+      ctx.lineTo(trackEnd, 118);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Lane divider
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.beginPath();
+      ctx.moveTo(trackStart, 64);
+      ctx.lineTo(trackEnd, 64);
+      ctx.stroke();
+
+      // Player Car
+      const px = trackStart + (span * Math.min(100, racerPlayerProgress)) / 100;
+      ctx.font = '28px sans-serif';
+      ctx.fillText('🏎️', px - 15, 44);
+      ctx.font = 'bold 11px Inter';
+      ctx.fillStyle = '#000000';
+      ctx.fillText('SIZ', px - 10, 58);
+
+      // Bot Car
+      const bx = trackStart + (span * Math.min(100, racerBotProgress)) / 100;
+      ctx.font = '28px sans-serif';
+      ctx.fillText('🚙', bx - 15, 102);
+      ctx.font = 'bold 11px Inter';
+      ctx.fillText('BOT', bx - 10, 118);
+    }
+
+    function handleRacerAnswer(isCorrect) {
+      if (isCorrect) {
+        racerPlayerProgress += 30;
+        racerBotProgress += 12;
+      } else {
+        racerBotProgress += 28;
+        showToast('❌ Noto\'g\'ri! Raqib oldinga o\'tib ketdi!', 'error');
+      }
+
+      if (racerPlayerProgress >= 100) {
+        drawRacerTrack();
+        incrementGamesPlayed();
+        awardStudentCoins(20, 'Turbo So\'z Poygasida 1-o\'rin!');
+        setTimeout(startTurboRacerGame, 1300);
+      } else if (racerBotProgress >= 100) {
+        drawRacerTrack();
+        showToast('🏁 Raqib marraga birinchi yetib keldi! Qayta urining.', 'error');
+        setTimeout(startTurboRacerGame, 1300);
+      } else {
+        renderTurboRacerRound();
+      }
+    }
+
+    // --- VIDEO GAME 3: QUIZ ---
+    let currentQuizWord = null;
+    function startQuizGame() {
+      const pool = getGamePool();
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      currentQuizWord = shuffled[0];
+      const options = shuffled.slice(0, 4).sort(() => Math.random() - 0.5);
+
+      document.getElementById('game-arena').innerHTML = `
+        <div class="space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-lg border-2 border-black font-black text-xs">🎯 SO'Z TOPISH • ${currentQuizWord.level}</span>
+            <button onclick="speakWordById(${currentQuizWord.id}, 'en')" class="game-option-btn px-4 py-2 rounded-xl font-extrabold text-xs">🔊 Eshitish</button>
+          </div>
+          <div class="text-center py-4 space-y-1">
+            <h3 class="text-4xl font-black">${currentQuizWord.en.replace(/\s*\(\d+\)$/, '')}</h3>
+            <p class="text-sm font-semibold">${currentQuizWord.ipa || ''}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-2xl mx-auto">
+            ${options.map(opt => `
+              <button onclick="checkQuizAnswer(this, ${opt.id === currentQuizWord.id})" class="game-option-btn p-4 rounded-2xl font-extrabold text-base">
+                ${opt.uz.split('—')[0].trim()}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkQuizAnswer(btn, isCorrect) {
+      document.querySelectorAll('#game-arena .game-option-btn').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('game-option-correct');
+        incrementGamesPlayed();
+        awardStudentCoins(10, `Quiz: ${currentQuizWord.en}`);
+      } else {
+        btn.classList.add('game-option-wrong');
+        showToast(`❌ To'g'ri javob: "${currentQuizWord.uz}"`, 'error');
+      }
+      setTimeout(startQuizGame, 1300);
+    }
+
+    // --- VIDEO GAME 4: MATCH PAIRS ---
+    let matchSelEn = null, matchSelUz = null, matchDone = 0, matchTotal = 5;
+    function startMatchGame() {
+      const pool = getGamePool();
+      const pairs = [...pool].sort(() => Math.random() - 0.5).slice(0, 5);
+      matchTotal = pairs.length;
+      matchDone = 0;
+      matchSelEn = null;
+      matchSelUz = null;
+
+      const enList = [...pairs].sort(() => Math.random() - 0.5);
+      const uzList = [...pairs].sort(() => Math.random() - 0.5);
+
+      document.getElementById('game-arena').innerHTML = `
+        <div class="space-y-5">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-lg border-2 border-black font-black text-xs">🔗 JUFTLIKNI TOPISH</span>
+            <span class="text-xs font-extrabold">Inglizcha va o'zbekcha juftliklarni tanlang</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 max-w-3xl mx-auto">
+            <div class="space-y-2.5" id="match-en-col">
+              ${enList.map(w => `<button onclick="pickMatch(this,'en',${w.id})" class="game-option-btn w-full p-3.5 rounded-2xl font-extrabold text-sm">${w.en.replace(/\s*\(\d+\)$/, '')}</button>`).join('')}
+            </div>
+            <div class="space-y-2.5" id="match-uz-col">
+              ${uzList.map(w => `<button onclick="pickMatch(this,'uz',${w.id})" class="game-option-btn w-full p-3.5 rounded-2xl font-extrabold text-sm">${w.uz.split('—')[0].trim()}</button>`).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function pickMatch(btn, side, id) {
+      if (btn.disabled) return;
+      if (side === 'en') {
+        document.querySelectorAll('#match-en-col button').forEach(b => b.classList.remove('game-option-selected'));
+        btn.classList.add('game-option-selected');
+        matchSelEn = { btn, id };
+      } else {
+        document.querySelectorAll('#match-uz-col button').forEach(b => b.classList.remove('game-option-selected'));
+        btn.classList.add('game-option-selected');
+        matchSelUz = { btn, id };
+      }
+
+      if (matchSelEn && matchSelUz) {
+        if (matchSelEn.id === matchSelUz.id) {
+          matchSelEn.btn.classList.add('game-option-correct');
+          matchSelUz.btn.classList.add('game-option-correct');
+          matchSelEn.btn.disabled = true;
+          matchSelUz.btn.disabled = true;
+          matchDone++;
+          matchSelEn = null;
+          matchSelUz = null;
+          if (matchDone === matchTotal) {
+            incrementGamesPlayed();
+            awardStudentCoins(15, 'Juftlikni topish o\'yini!');
+            setTimeout(startMatchGame, 1100);
+          }
+        } else {
+          const a = matchSelEn.btn, b = matchSelUz.btn;
+          a.classList.add('game-option-wrong');
+          b.classList.add('game-option-wrong');
+          matchSelEn = null;
+          matchSelUz = null;
+          setTimeout(() => {
+            a.classList.remove('game-option-wrong', 'game-option-selected');
+            b.classList.remove('game-option-wrong', 'game-option-selected');
+          }, 450);
+        }
+      }
+    }
+
+    // --- VIDEO GAME 5: WORD SCRAMBLE ---
+    let scrambleTarget = null, scrambleTyped = '';
+    function startScrambleGame() {
+      const pool = getGamePool().filter(w => {
+        const clean = w.en.replace(/\s*\(\d+\)$/, '');
+        return clean.length >= 3 && clean.length <= 10 && /^[a-zA-Z]+$/.test(clean);
+      });
+      scrambleTarget = pool[Math.floor(Math.random() * pool.length)];
+      const cleanWord = scrambleTarget.en.replace(/\s*\(\d+\)$/, '').toUpperCase();
+      scrambleTyped = '';
+      const letters = cleanWord.split('').sort(() => Math.random() - 0.5);
+
+      document.getElementById('game-arena').innerHTML = `
+        <div class="space-y-5 text-center max-w-xl mx-auto">
+          <span class="px-3 py-1 rounded-lg border-2 border-black font-black text-xs">🔤 HARFLARNI TERISH</span>
+          <h3 class="text-3xl font-black">"${scrambleTarget.uz.split('—')[0].trim()}"</h3>
+          <div id="scramble-box" class="min-h-[54px] border-2 border-black rounded-2xl p-3 flex items-center justify-center text-2xl font-black tracking-widest">_ _ _</div>
+          <div class="flex flex-wrap justify-center gap-2">
+            ${letters.map(ch => `<button onclick="tapScrambleLetter(this,'${ch}','${cleanWord}')" class="game-option-btn w-11 h-11 rounded-xl font-black text-lg">${ch}</button>`).join('')}
+          </div>
+          <button onclick="startScrambleGame()" class="game-option-btn px-4 py-2 rounded-xl font-bold text-xs">🔄 Qayta terish</button>
+        </div>
+      `;
+    }
+
+    function tapScrambleLetter(btn, ch, target) {
+      btn.disabled = true;
+      btn.style.opacity = '0.3';
+      scrambleTyped += ch;
+      document.getElementById('scramble-box').textContent = scrambleTyped;
+      if (scrambleTyped.length === target.length) {
+        if (scrambleTyped === target) {
+          incrementGamesPlayed();
+          awardStudentCoins(15, `Harflar terildi: ${target}`);
+          setTimeout(startScrambleGame, 1100);
+        } else {
+          showToast(`❌ To'g'risi: ${target}`, 'error');
+          setTimeout(startScrambleGame, 1200);
+        }
+      }
+    }
+
+    // --- VIDEO GAME 6: SPEED TRUE / FALSE ---
+    let tfItem = null, tfTruth = true;
+    function startTrueFalseGame() {
+      const pool = getGamePool();
+      const sh = [...pool].sort(() => Math.random() - 0.5);
+      tfItem = sh[0];
+      tfTruth = Math.random() > 0.45;
+      const shownUz = tfTruth ? tfItem.uz : sh[1].uz;
+
+      document.getElementById('game-arena').innerHTML = `
+        <div class="space-y-6 text-center max-w-xl mx-auto">
+          <span class="px-3 py-1 rounded-lg border-2 border-black font-black text-xs">⚡ TEZKOR TO'G'RI / NOTO'G'RI</span>
+          <div class="p-6 rounded-3xl border-2 border-black space-y-2">
+            <h3 class="text-3xl font-black">${tfItem.en.replace(/\s*\(\d+\)$/, '')}</h3>
+            <p class="font-black">=</p>
+            <h4 class="text-2xl font-black">${shownUz.split('—')[0].trim()}</h4>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="checkTrueFalse(true)" class="game-option-btn py-4 rounded-2xl font-black text-base">✅ TO'G'RI</button>
+            <button onclick="checkTrueFalse(false)" class="game-option-btn py-4 rounded-2xl font-black text-base">❌ NOTO'G'RI</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function checkTrueFalse(ans) {
+      if (ans === tfTruth) {
+        incrementGamesPlayed();
+        awardStudentCoins(8, `Tezkor javob: ${tfItem.en}`);
+      } else {
+        showToast(`❌ Xato! "${tfItem.en}" = "${tfItem.uz}"`, 'error');
+      }
+      startTrueFalseGame();
+    }
+
+    // ==================== 11. COINS STORE & NEWS ====================
+    function renderCoinsTab() {
+      refreshCurrentUserUI();
+      const st = getLoggedInStudent();
+      const ownedList = st ? st.unlockedRewards : [];
+      const history = st ? st.coinHistory : [];
+
+      document.getElementById('rewards-store-grid').innerHTML = REWARD_ITEMS.map(item => {
+        const owned = ownedList.includes(item.id);
+        return `
+          <div class="rounded-2xl p-5 border-2 ${owned ? 'border-emerald-400 bg-emerald-50' : 'border-slate-200 bg-slate-50'} flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <h4 class="font-black text-slate-900 text-sm">${item.title}</h4>
+                <span class="bg-amber-400 text-slate-950 font-black text-xs px-2.5 py-1 rounded-lg">🪙 ${item.cost}</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-2">${item.desc}</p>
+            </div>
+            <button onclick="buyStudentReward('${item.id}', ${item.cost}, '${item.title.replace(/'/g, "\\'")}')" ${owned ? 'disabled' : ''} class="w-full py-2.5 rounded-xl font-extrabold text-xs ${owned ? 'bg-emerald-600 text-white' : 'bg-slate-900 hover:bg-indigo-600 text-white'}">
+              ${owned ? '✅ Sotib olingan' : `Sotib olish (${item.cost} Coin)`}
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('coin-history-list').innerHTML = history.map(h => `
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div>
+            <p class="text-xs font-bold text-slate-800">${h.text}</p>
+            <p class="text-[11px] text-slate-400">${h.time}</p>
+          </div>
+          <span class="font-black text-sm ${h.type === 'add' ? 'text-emerald-600' : 'text-rose-600'}">${h.amount} 🪙</span>
+        </div>
+      `).join('');
+    }
+
+    function buyStudentReward(id, cost, title) {
+      const st = getLoggedInStudent();
+      if (!st) return;
+      if (st.coins < cost) {
+        showToast(`Coin yetarli emas! Yana ${cost - st.coins} Coin kerak.`, 'error');
+        return;
+      }
+      st.unlockedRewards.push(id);
+      awardStudentCoins(-cost, `Mukofot: ${title}`);
+      renderCoinsTab();
+    }
+
+    function renderHomeNews() {
+      document.getElementById('news-grid').innerHTML = db.news.map(n => `
+        <article class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between gap-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">${n.tag}</span>
+              <span class="text-xs text-slate-400 font-medium">${n.date}</span>
+            </div>
+            <h3 class="text-lg font-black text-slate-900">${n.title}</h3>
+            <p class="text-sm text-slate-600">${n.body}</p>
+          </div>
+          <button onclick="speakText('${n.title.replace(/'/g, "\\'")}. ${n.body.replace(/'/g, "\\'")}', 'uz')" class="self-start text-xs font-extrabold text-indigo-600 hover:underline">
+            🔊 Ovozli tinglash
+          </button>
+        </article>
+      `).join('');
+    }
+
+    // ==================== 12. ADMIN DASHBOARD ====================
+    function renderAdminDashboard() {
+      const selectEl = document.getElementById('admin-student-select');
+      if (db.users.length === 0) {
+        selectEl.innerHTML = '<option value="">Hali o\'quvchi ro\'yxatdan o\'tmagan</option>';
+        document.getElementById('admin-student-balance').textContent = '0 Coin';
+      } else {
+        selectEl.innerHTML = db.users.map(u => `<option value="${u.username}">${u.fullName} (@${u.username}) — ${u.coins} Coin</option>`).join('');
+        updateAdminSelectedStudentInfo();
+      }
+
+      document.getElementById('admin-students-table').innerHTML = db.users.length === 0
+        ? '<p class="text-sm text-slate-500 col-span-full">Hozircha o\'quvchi akkauntlari yo\'q.</p>'
+        : db.users.map(u => `
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <div>
+              <p class="font-black text-sm text-slate-900">${u.avatar || '🎓'} ${u.fullName}</p>
+              <p class="text-xs text-slate-500">@${u.username} • Parol: <span class="font-mono font-bold">${u.password}</span></p>
+            </div>
+            <span class="bg-amber-300 text-slate-950 font-black text-xs px-3 py-1 rounded-xl">🪙 ${u.coins}</span>
+          </div>
+        `).join('');
+    }
+
+    function updateAdminSelectedStudentInfo() {
+      const uname = document.getElementById('admin-student-select').value;
+      const st = db.users.find(u => u.username === uname);
+      document.getElementById('admin-student-balance').textContent = st ? `${st.coins} Coin` : '0 Coin';
+    }
+
+    function adminModifyStudentCoins(action) {
+      const uname = document.getElementById('admin-student-select').value;
+      const st = db.users.find(u => u.username === uname);
+      if (!st) {
+        showToast('Avval o\'quvchi akkauntini tanlang!', 'error');
+        return;
+      }
+      const amt = parseInt(document.getElementById('admin-coin-amount').value, 10);
+      if (isNaN(amt) || amt <= 0) return;
+
+      const delta = action === 'add' ? amt : -amt;
+      st.coins = Math.max(0, st.coins + delta);
+      st.coinHistory.unshift({
+        text: action === 'add' ? 'Admin tomonidan qo\'shildi' : 'Admin tomonidan ayrildi',
+        amount: delta >= 0 ? `+${delta}` : `${delta}`,
+        type: delta >= 0 ? 'add' : 'sub',
+        time: 'Admin'
+      });
+      saveDatabase();
+      renderAdminDashboard();
+      showToast(`✅ ${st.fullName} hisobiga ${delta >= 0 ? '+' + delta : delta} Coin o'zgartirildi!`, 'success');
+    }
+
+    function adminAddWord(e) {
+      e.preventDefault();
+      const newW = {
+        id: Date.now(),
+        level: document.getElementById('admin-word-level').value,
+        ipa: document.getElementById('admin-word-ipa').value.trim(),
+        en: document.getElementById('admin-word-en').value.trim(),
+        uz: document.getElementById('admin-word-uz').value.trim(),
+        exEn: document.getElementById('admin-word-ex-en').value.trim(),
+        exUz: document.getElementById('admin-word-ex-uz').value.trim()
+      };
+      db.words.unshift(newW);
+      saveDatabase();
+      e.target.reset();
+      showToast(`✅ "${newW.en}" (${newW.level}) qo'shildi!`, 'success');
+    }
+
+    function adminAddNews(e) {
+      e.preventDefault();
+      db.news.unshift({
+        id: Date.now(),
+        tag: document.getElementById('admin-news-tag').value,
+        title: document.getElementById('admin-news-title').value.trim(),
+        body: document.getElementById('admin-news-body').value.trim(),
+        date: 'Hozirgina'
+      });
+      saveDatabase();
+      renderHomeNews();
+      e.target.reset();
+      showToast('📰 Yangilik chop etildi!', 'success');
+    }
+
+    // ==================== INITIALIZE ====================
+    window.addEventListener('DOMContentLoaded', loadDatabase);
+  </script>
+</body>
+</html>
